@@ -67,10 +67,10 @@ if (timetableExists === "true") {
     subjectSix[i].children[0].href = subjectSixDetails[2];
   };
 
-  //var calDay = new Date().getDay();
-  var calDay = 2;
-  //var calHour = new Date().getHours();
-  var calHour = 9;
+  var calDay = new Date().getDay();
+  //var calDay = 2;
+  var calHour = new Date().getHours();
+  //var calHour = 9;
   var calTime;
 
   if (calHour == 7 || calHour == 8) {
