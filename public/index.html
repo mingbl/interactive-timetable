@@ -1,23 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="generator" content="GitLab Pages">
-    <title>Plain HTML site using GitLab Pages</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Timetable</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
-    <div class="navbar">
-      <a href="https://pages.gitlab.io/plain-html/">Plain HTML Example</a>
-      <a href="https://gitlab.com/pages/plain-html/">Repository</a>
-      <a href="https://gitlab.com/pages/">Other Examples</a>
+  <body><center>
+    <div id="timetable">
+      <h1>Timetable</h1>
+      <table>
+        <tr>
+          <td id="sidebar"></td>
+          <td><b>Monday</b></td>
+          <td><b>Tuesday</b></td>
+          <td><b>Wednesday</b></td>
+          <td><b>Thursday</b></td>
+          <td><b>Friday</b></td>
+        </tr>
+        <tr id="periodOne">
+          <td id="sidebar"><b>P1</b></td>
+          <td><a><div>8:00-9:10</div></a></td>
+          <td><a><div>8:00-9:10</div></a></td>
+          <td><a><div>8:00-9:10</div></a></td>
+          <td><a><div>8:00-9:10</div></a></td>
+          <td><a><div>8:00-9:10</div></a></td>
+        </tr>
+        <tr id="periodTwo">
+          <td id="sidebar"><b>P2</b></td>
+          <td><a><div>9:10-10:30</div></a></td>
+          <td><a><div>9:10-10:30</div></a></td>
+          <td><a><div>9:10-10:30</div></a></td>
+          <td><a><div>9:10-10:30</div></a></td>
+          <td><a><div>9:10-10:30</div></a></td>
+        </tr>
+        <tr class="break">
+          <td id="sidebar"><b>MT</b></td>
+          <td>10:30-10:55<br></td>
+          <td>10:30-10:55<br></td>
+          <td>10:30-10:55<br></td>
+          <td>10:30-10:55<br></td>
+          <td>10:30-10:55<br></td>
+        </tr>
+        <tr id="periodThree">
+          <td id="sidebar"><b>P3</b></td>
+          <td><a><div>10:55-12:05</div></a></td>
+          <td><a><div>10:55-12:05</div></a></td>
+          <td><a><div>10:55-12:05</div></a></td>
+          <td><a><div>10:55-12:05</div></a></td>
+          <td><a><div>10:55-12:05</div></a></td>
+        </tr>
+        <tr class="break">
+          <td id="sidebar"><b>L</b></td>
+          <td>12:05-12:50<br></td>
+          <td>12:05-12:50<br></td>
+          <td>12:05-12:50<br></td>
+          <td>12:05-12:50<br></td>
+          <td>12:05-12:50<br></td>
+        </tr>
+        <tr id="periodFour">
+          <td id="sidebar"><b>P4</b></td>
+          <td><a><div>12:50-2:00</div></a></td>
+          <td><a><div>12:50-2:00</div></a></td>
+          <td><a><div>12:50-2:00</div></a></td>
+          <td><a><div>12:50-2:00</div></a></td>
+          <td><a><div>12:50-2:00</div></a></td>
+        </tr>
+      </table>
+      <p id="weekend">NO SCHOOL TODAY! WOOO!!!</p>
+      <br><button type="button" name="button" onclick="editTable()">Edit Timetable</button>
     </div>
-
-    <h1>Hello World!</h1>
-
-    <p>
-      This is a simple plain-HTML website on GitLab Pages, without any fancy static site generator.
-    </p>
+    <div id="creator">
+      <h1>Clickable Timetable Creator</h1>
+      <p>Version: 14a - Created by ML</p>
+      <section>
+        <h2>Lesson Schedule</h2>
+        <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell.</p>
+        <div>
+          <input type="text" class="period1codes"><input type="text" class="period1codes"><input type="text" class="period1codes"><input type="text" class="period1codes"><input type="text" class="period1codes"><br>
+          <input type="text" class="period2codes"><input type="text" class="period2codes"><input type="text" class="period2codes"><input type="text" class="period2codes"><input type="text" class="period2codes"><br>
+          <input type="text" class="period3codes"><input type="text" class="period3codes"><input type="text" class="period3codes"><input type="text" class="period3codes"><input type="text" class="period3codes"><br>
+          <input type="text" class="period4codes"><input type="text" class="period4codes"><input type="text" class="period4codes"><input type="text" class="period4codes"><input type="text" class="period4codes"><br>
+        </div>
+      </section>
+      <section>
+        <h2>Collaborate Links</h2>
+        <p>For each of your subjects, type the subject code (ENG, MAG, etc.) in the left cell, the name of the subject (English, Maths, etc.) in the middle cell, and the lesson link in the right cell.</p>
+        <p>To get the lesson link of your class, log into Blackboard and go to where you'd normally click on your teacher's or class' name before being sent to the "Room Details" page.<br>Right click on the hyperlink and copy the url. The link should start with <u>https://elearn.eq.edu.au/webapps/bb-collaborate-bb_bb60/</u></p>
+        <div>
+          <input type="text" class="subject1details"><input type="text" class="subject1details"><input type="text" class="subject1details"><br>
+          <input type="text" class="subject2details"><input type="text" class="subject2details"><input type="text" class="subject2details"><br>
+          <input type="text" class="subject3details"><input type="text" class="subject3details"><input type="text" class="subject3details"><br>
+          <input type="text" class="subject4details"><input type="text" class="subject4details"><input type="text" class="subject4details"><br>
+          <input type="text" class="subject5details"><input type="text" class="subject5details"><input type="text" class="subject5details"><br>
+          <input type="text" class="subject6details"><input type="text" class="subject6details"><input type="text" class="subject6details"><br>
+        </div>
+      </section>
+      <br><button type="button" name="button" onclick="saveEntire()">Save</button>
+      <button type="button" name="button" onclick="importTable()">Import</button>
+      <button type="button" name="button" onclick="exportTable()">Export</button>
+    </div>
+  </center>
+  <script src="scripts.js" charset="utf-8"></script>
   </body>
 </html>
-
