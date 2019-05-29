@@ -1,22 +1,73 @@
+/* Dark Mode */
 body {
   background-color: black
 }
-h1, h2, p {
-  font-family: helvetica;
+h1, h2, p, a, td {
   color: white
+}
+input {
+  color: black
+}
+input:hover {
+  background-color: lightgrey;
+}
+table, tr, td {
+  border: 1px solid white;
+}
+td.nonactive > a > div:hover {
+  background-color: darkgrey;
+}
+#currentLesson {
+  background: #555555;
+}
+#currentLesson:hover {
+  background-color: darkgrey;
+}
+
+/* Light Mode
+body.lightmode {
+  background-color: white
+}
+h1.lightmode, h2.lightmode, p.lightmode, a.lightmode, td.lightmode {
+  color: black
+}
+input.lightmode {
+  color: black
+}
+input.lightmode:hover {
+  background-color: lightgrey;
+}
+table.lightmode, tr.lightmode, td.lightmode {
+  border: 2px solid black;
+}
+td a div.lightmode:hover {
+  background-color: darkgrey;
+}
+/*#currentLesson {
+  background: lightgrey;
+}
+#currentLesson:hover {
+  background-color: #AAAAAA;
+}*/
+
+/* Other styles */
+h1, h2, p, a, td {
+  font-family: helvetica;
 }
 input {
   border-collapse: collapse;
   text-align: center;
   padding-top: 1vh;
   padding-bottom: 1vh;
+  transition: .25s ease;
+}
+div#periods > input {
+  width: 15vw;
+  max-width: 120px;
+}
+div#subjects > input {
   width: 20vw;
   max-width: 150px;
-  transition: .25s ease;
-  color: black
-}
-input:hover {
-  background-color: lightgrey;
 }
 textarea#codeOutput {
   text-align: center;
@@ -27,18 +78,16 @@ textarea#codeOutput {
 button {
   color: black
 }
-* {
-  font-family: helvetica;
-  color: white;
-}
 table, tr, td {
-  border: 1px solid white;
   border-collapse: collapse;
   text-align: center;
 }
 td {
   width: 20vw;
   max-width: 150px;
+}
+td.extended {
+  max-width: 200px
 }
 td#sidebar {
   width: 3vw;
@@ -52,15 +101,26 @@ td a div {
   padding-bottom: 1vh;
   transition: .25s ease;
 }
-td a div:hover {
-  background-color: darkgrey;
-}
 a {
   text-decoration: none
 }
-#currentLesson {
-  background: #555555;
+
+/* Subject colours
+td.sub1 {
+  background-color: darkred
 }
-#currentLesson:hover {
-  background-color: darkgrey;
+td.sub2 {
+  background-color: darkblue
 }
+td.sub3 {
+  background-color: darkgreen
+}
+td.sub4 {
+  background-color: yellow
+}
+td.sub5 {
+  background-color: purple
+}
+td.sub6 {
+  background-color: orange
+} */
