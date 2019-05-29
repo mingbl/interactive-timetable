@@ -19,52 +19,90 @@ if (timetableExists === "true") {
   var subjectSixDetails = (localStorage.getItem("subject6detailsSaved")).split(",");
 
   for (var i = 0; i < 5; i++) {
-    periodOneNodes[i + 1].className = periodOneCodes[i];
-    periodTwoNodes[i + 1].className = periodTwoCodes[i];
-    periodThreeNodes[i + 1].className = periodThreeCodes[i];
-    periodFourNodes[i + 1].className = periodFourCodes[i];
+    periodOneNodes[i + 1].classList.add(periodOneCodes[i]);
+    periodTwoNodes[i + 1].classList.add(periodTwoCodes[i]);
+    periodThreeNodes[i + 1].classList.add(periodThreeCodes[i]);
+    periodFourNodes[i + 1].classList.add(periodFourCodes[i]);
   };
 
+  var tnamesVisible = localStorage.getItem("tnamesVisible");
+
   var subjectOne = document.getElementsByClassName(subjectOneDetails[0]);
-  for (var i = 0; i < subjectOne.length; i++) {
-    subjectOne[i].title = subjectOneDetails[1];
-    subjectOne[i].children[0].children[0].innerHTML += "<br>" + subjectOneDetails[1];
-    subjectOne[i].children[0].href = subjectOneDetails[2];
+  if (subjectOneDetails[1] != "-") {
+    for (var i = 0; i < subjectOne.length; i++) {
+      subjectOne[i].title = subjectOneDetails[1] + " | " + subjectOneDetails[3];
+      subjectOne[i].children[0].children[0].innerHTML += "<br><b>" + subjectOneDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectOne[i].children[0].children[0].innerHTML += "<br>" + subjectOneDetails[3];
+      };
+      subjectOne[i].children[0].href = subjectOneDetails[2];
+      subjectOne[i].classList.add("nonactive", "sub1")
+    }
   };
 
   var subjectTwo = document.getElementsByClassName(subjectTwoDetails[0]);
-  for (var i = 0; i < subjectTwo.length; i++) {
-    subjectTwo[i].title = subjectTwoDetails[1];
-    subjectTwo[i].children[0].children[0].innerHTML += "<br>" + subjectTwoDetails[1];
-    subjectTwo[i].children[0].href = subjectTwoDetails[2];
+  if (subjectTwoDetails[1] != "-") {
+    for (var i = 0; i < subjectTwo.length; i++) {
+      subjectTwo[i].title = subjectTwoDetails[1] + " | " + subjectTwoDetails[3];
+      subjectTwo[i].children[0].children[0].innerHTML += "<br><b>" + subjectTwoDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectTwo[i].children[0].children[0].innerHTML += "<br>" + subjectTwoDetails[3];
+      };
+      subjectTwo[i].children[0].href = subjectTwoDetails[2];
+      subjectTwo[i].classList.add("nonactive", "sub2")
+    }
   };
 
   var subjectThree = document.getElementsByClassName(subjectThreeDetails[0]);
-  for (var i = 0; i < subjectThree.length; i++) {
-    subjectThree[i].title = subjectThreeDetails[1];
-    subjectThree[i].children[0].children[0].innerHTML += "<br>" + subjectThreeDetails[1];
-    subjectThree[i].children[0].href = subjectThreeDetails[2];
+  if (subjectThreeDetails[1] != "-") {
+    for (var i = 0; i < subjectThree.length; i++) {
+      subjectThree[i].title = subjectThreeDetails[1] + " | " + subjectThreeDetails[3];
+      subjectThree[i].children[0].children[0].innerHTML += "<br><b>" + subjectThreeDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectThree[i].children[0].children[0].innerHTML += "<br>" + subjectThreeDetails[3];
+      };
+      subjectThree[i].children[0].href = subjectThreeDetails[2];
+      subjectThree[i].classList.add("nonactive", "sub3")
+    }
   };
 
   var subjectFour = document.getElementsByClassName(subjectFourDetails[0]);
-  for (var i = 0; i < subjectFour.length; i++) {
-    subjectFour[i].title = subjectFourDetails[1];
-    subjectFour[i].children[0].children[0].innerHTML += "<br>" + subjectFourDetails[1];
-    subjectFour[i].children[0].href = subjectFourDetails[2];
+  if (subjectFourDetails[1] != "-") {
+    for (var i = 0; i < subjectFour.length; i++) {
+      subjectFour[i].title = subjectFourDetails[1] + " | " + subjectFourDetails[3];
+      subjectFour[i].children[0].children[0].innerHTML += "<br><b>" + subjectFourDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectFour[i].children[0].children[0].innerHTML += "<br>" + subjectFourDetails[3];
+      };
+      subjectFour[i].children[0].href = subjectFourDetails[2];
+      subjectFour[i].classList.add("nonactive", "sub4")
+    }
   };
 
   var subjectFive = document.getElementsByClassName(subjectFiveDetails[0]);
-  for (var i = 0; i < subjectFive.length; i++) {
-    subjectFive[i].title = subjectFiveDetails[1];
-    subjectFive[i].children[0].children[0].innerHTML += "<br>" + subjectFiveDetails[1];
-    subjectFive[i].children[0].href = subjectFiveDetails[2];
+  if (subjectFiveDetails[1] != "-") {
+    for (var i = 0; i < subjectFive.length; i++) {
+      subjectFive[i].title = subjectFiveDetails[1] + " | " + subjectFiveDetails[3];
+      subjectFive[i].children[0].children[0].innerHTML += "<br><b>" + subjectFiveDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectFive[i].children[0].children[0].innerHTML += "<br>" + subjectFiveDetails[3];
+      };
+      subjectFive[i].children[0].href = subjectFiveDetails[2];
+      subjectFive[i].classList.add("nonactive", "sub5")
+    }
   };
 
   var subjectSix = document.getElementsByClassName(subjectSixDetails[0]);
-  for (var i = 0; i < subjectSix.length; i++) {
-    subjectSix[i].title = subjectSixDetails[1];
-    subjectSix[i].children[0].children[0].innerHTML += "<br>" + subjectSixDetails[1];
-    subjectSix[i].children[0].href = subjectSixDetails[2];
+  if (subjectSixDetails[1] != "-") {
+    for (var i = 0; i < subjectSix.length; i++) {
+      subjectSix[i].title = subjectSixDetails[1] + " | " + subjectSixDetails[3];
+      subjectSix[i].children[0].children[0].innerHTML += "<br><b>" + subjectSixDetails[1] + "</b>";
+      if (tnamesVisible === "true") {
+        subjectSix[i].children[0].children[0].innerHTML += "<br>" + subjectSixDetails[3];
+      };
+      subjectSix[i].children[0].href = subjectSixDetails[2];
+      subjectSix[i].classList.add("nonactive", "sub6")
+    }
   };
 
   var calDay = new Date().getDay();
@@ -116,7 +154,10 @@ if (timetableExists === "true") {
        } else {
          dataTemp[i] = "-"
        }
-    }
+    };
+    if (dataClass.includes("subject") && dataTemp[2] === "-") {
+      dataTemp[2] = "#"
+    };
     return dataTemp
   };
 
@@ -126,7 +167,7 @@ if (timetableExists === "true") {
     document.getElementsByClassName("period3codes")[i].value = localStorage.getItem("period3codesSaved").split(",")[i];
     document.getElementsByClassName("period4codes")[i].value = localStorage.getItem("period4codesSaved").split(",")[i];
   };
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 4; i++) {
     document.getElementsByClassName("subject1details")[i].value = localStorage.getItem("subject1detailsSaved").split(",")[i];
     document.getElementsByClassName("subject2details")[i].value = localStorage.getItem("subject2detailsSaved").split(",")[i];
     document.getElementsByClassName("subject3details")[i].value = localStorage.getItem("subject3detailsSaved").split(",")[i];
@@ -134,6 +175,12 @@ if (timetableExists === "true") {
     document.getElementsByClassName("subject5details")[i].value = localStorage.getItem("subject5detailsSaved").split(",")[i];
     document.getElementsByClassName("subject6details")[i].value = localStorage.getItem("subject6detailsSaved").split(",")[i];
   };
+  var completeArray = document.getElementsByClassName("cell");
+  for (var i = 0; i < completeArray.length; i++) {
+    if (completeArray[i].value === "-" || completeArray[i].value === "#") {
+      completeArray[i].value = ""
+    }
+  }
 } else {
   localStorage.setItem("timetableExists", "false");
   location.reload()
@@ -185,6 +232,12 @@ function importTable() {
   for (var i = 0; i < arrayS6.length; i++) {
     arrayS6[i].value = dataImport[9].split(",")[i]
   }
+  var completeArray = document.getElementsByClassName("cell");
+  for (var i = 0; i < completeArray.length; i++) {
+    if (completeArray[i].value === "-" || completeArray[i].value === "#" || completeArray[i].value === "undefined") {
+      completeArray[i].value = ""
+    }
+  }
 };
 
 function exportTable() {
@@ -196,4 +249,26 @@ function exportTable() {
     completeCodes += localStorage.getItem("subject" + [i] + "detailsSaved") + ";"
   };
   prompt("Export Data:", completeCodes);
+}
+
+/*function showTnames() {
+  localStorage.setItem("tnamesVisible", "true")
+}
+
+function hideTnames() {
+  localStorage.setItem("tnamesVisible", "false")
+}*/
+
+function toggleTnames() {
+  if (localStorage.getItem("tnamesVisible") === "true") {
+    localStorage.setItem("tnamesVisible", "false")
+  } else {
+    localStorage.setItem("tnamesVisible", "true")
+  }
+}
+if (tnamesVisible === "true") {
+  tableCells = document.getElementsByTagName("td");
+  for (var i = 0; i < tableCells.length; i++) {
+    tableCells[i].classList.add("extended")
+  }
 }
