@@ -155,9 +155,9 @@ if (timetableExists === "true") {
          dataTemp[i] = "-"
        }
     };
-    if (dataClass.includes("subject") && dataTemp[2] === "-") {
+    /*if (dataClass.includes("subject") && dataTemp[2] === "-") {
       dataTemp[2] = "#"
-    };
+    };*/
     return dataTemp
   };
 
@@ -191,8 +191,9 @@ function editTable() {
 }
 
 function importTable() {
-  var dataImport = prompt("Enter Data:").split(";");
-  if (dataImport != "") {
+  var dataImport = prompt("Enter Data:")
+  if (dataImport != "" && dataImport != null) {
+    dataImport = dataImport.split(";");
     var arrayP1 = document.getElementsByClassName("period1codes");
     for (var i = 0; i < arrayP1.length; i++) {
       arrayP1[i].value = dataImport[0].split(",")[i]
@@ -239,10 +240,75 @@ function importTable() {
         completeArray[i].value = ""
       }
     }
+  } else {
+    alert("No data found.")
   }
 };
 
-function exportTable() {
+function importFromUrl() {
+  var dataImport = window.location.href.toString().split("#")
+  if (dataImport[1]) {
+    dataImport.shift();
+    dataImport = dataImport.toString().replace(/%20/g, " ");
+    //dataImport = decodeURI(dataImport).toString();
+    //alert(dataImport);
+    dataImport = dataImport.split(";");
+  } else {
+    dataImport = ""
+  }
+  if (dataImport != "") {
+    var arrayP1 = document.getElementsByClassName("period1codes");
+    for (var i = 0; i < arrayP1.length; i++) {
+      arrayP1[i].value = dataImport[0].split(",")[i]
+    }
+    var arrayP2 = document.getElementsByClassName("period2codes");
+    for (var i = 0; i < arrayP2.length; i++) {
+      arrayP2[i].value = dataImport[1].split(",")[i]
+    }
+    var arrayP3 = document.getElementsByClassName("period3codes");
+    for (var i = 0; i < arrayP3.length; i++) {
+      arrayP3[i].value = dataImport[2].split(",")[i]
+    }
+    var arrayP4 = document.getElementsByClassName("period4codes");
+    for (var i = 0; i < arrayP4.length; i++) {
+      arrayP4[i].value = dataImport[3].split(",")[i]
+    }
+    var arrayS1 = document.getElementsByClassName("subject1details");
+    for (var i = 0; i < arrayS1.length; i++) {
+      arrayS1[i].value = dataImport[4].split(",")[i]
+    }
+    var arrayS2 = document.getElementsByClassName("subject2details");
+    for (var i = 0; i < arrayS2.length; i++) {
+      arrayS2[i].value = dataImport[5].split(",")[i]
+    }
+    var arrayS3 = document.getElementsByClassName("subject3details");
+    for (var i = 0; i < arrayS3.length; i++) {
+      arrayS3[i].value = dataImport[6].split(",")[i]
+    }
+    var arrayS4 = document.getElementsByClassName("subject4details");
+    for (var i = 0; i < arrayS4.length; i++) {
+      arrayS4[i].value = dataImport[7].split(",")[i]
+    }
+    var arrayS5 = document.getElementsByClassName("subject5details");
+    for (var i = 0; i < arrayS5.length; i++) {
+      arrayS5[i].value = dataImport[8].split(",")[i]
+    }
+    var arrayS6 = document.getElementsByClassName("subject6details");
+    for (var i = 0; i < arrayS6.length; i++) {
+      arrayS6[i].value = dataImport[9].split(",")[i]
+    }
+    var completeArray = document.getElementsByClassName("cell");
+    for (var i = 0; i < completeArray.length; i++) {
+      if (completeArray[i].value === "-"/* || completeArray[i].value === "#" || completeArray[i].value === "undefined"*/) {
+        completeArray[i].value = ""
+      }
+    }
+  } else {
+    alert("No data found.")
+  }
+}
+
+function exportTable(toUrl) {
   var completeCodes = "";
   for (var i = 1; i < 5; i++) {
     completeCodes += localStorage.getItem("period" + [i] + "codesSaved") + ";"
@@ -250,7 +316,12 @@ function exportTable() {
   for (var i = 1; i < 7; i++) {
     completeCodes += localStorage.getItem("subject" + [i] + "detailsSaved") + ";"
   };
-  prompt("Export Data:\n(Save this in case your local storage is wiped)", completeCodes);
+  if (toUrl === "true") {
+    window.location = "#" + completeCodes;
+    alert("Export successful. You can bookmark this URL and go to Edit Timetable > Import 2 if your timetable disappears.")
+  } else {
+    prompt("Export Data:\n(Save this in case your local storage is wiped)", completeCodes);
+  }
 }
 
 /*function showTnames() {
@@ -333,6 +404,52 @@ function setColours(bgColour, txColour) {
   /*for (var i = 0; i < document.getElementsByTagName("td").length; i++) {
     document.getElementsByTagName("td")[i].style.borderColor = txColour;
   }*/
+}
+
+function wipeTmt() {
+  var confirmWipe = confirm("Are you sure you want to wipe your timetable?");
+  if (confirmWipe) {
+    var arrayP1 = document.getElementsByClassName("period1codes");
+    for (var i = 0; i < arrayP1.length; i++) {
+      arrayP1[i].value = ""
+    }
+    var arrayP2 = document.getElementsByClassName("period2codes");
+    for (var i = 0; i < arrayP2.length; i++) {
+      arrayP2[i].value = ""
+    }
+    var arrayP3 = document.getElementsByClassName("period3codes");
+    for (var i = 0; i < arrayP3.length; i++) {
+      arrayP3[i].value = ""
+    }
+    var arrayP4 = document.getElementsByClassName("period4codes");
+    for (var i = 0; i < arrayP4.length; i++) {
+      arrayP4[i].value = ""
+    }
+    var arrayS1 = document.getElementsByClassName("subject1details");
+    for (var i = 0; i < arrayS1.length; i++) {
+      arrayS1[i].value = ""
+    }
+    var arrayS2 = document.getElementsByClassName("subject2details");
+    for (var i = 0; i < arrayS2.length; i++) {
+      arrayS2[i].value = ""
+    }
+    var arrayS3 = document.getElementsByClassName("subject3details");
+    for (var i = 0; i < arrayS3.length; i++) {
+      arrayS3[i].value = ""
+    }
+    var arrayS4 = document.getElementsByClassName("subject4details");
+    for (var i = 0; i < arrayS4.length; i++) {
+      arrayS4[i].value = ""
+    }
+    var arrayS5 = document.getElementsByClassName("subject5details");
+    for (var i = 0; i < arrayS5.length; i++) {
+      arrayS5[i].value = ""
+    }
+    var arrayS6 = document.getElementsByClassName("subject6details");
+    for (var i = 0; i < arrayS6.length; i++) {
+      arrayS6[i].value = ""
+    }
+  }
 }
 
 /*function disableCnl() {
