@@ -1,9 +1,19 @@
-/* Dark Mode */
 body {
   background-color: black
 }
 h1, h2, p, a, td {
   color: white
+}
+table, tr, td {
+  border-color: white
+}
+
+td.nonactive > a > div:hover, td.nonactive > a > div#currentLesson:hover {
+  background-color: lightgrey;
+}
+td.nonactive > a > div#currentLesson {
+  /*background: #555555;*/
+  background-color: grey;
 }
 input {
   color: black
@@ -12,43 +22,8 @@ input:hover {
   background-color: lightgrey;
 }
 table, tr, td {
-  border: 1px solid white;
+  border: 1px solid;
 }
-td.nonactive > a > div:hover {
-  background-color: darkgrey;
-}
-#currentLesson {
-  background: #555555;
-}
-#currentLesson:hover {
-  background-color: darkgrey;
-}
-
-/* Light Mode
-body.lightmode {
-  background-color: white
-}
-h1.lightmode, h2.lightmode, p.lightmode, a.lightmode, td.lightmode {
-  color: black
-}
-input.lightmode {
-  color: black
-}
-input.lightmode:hover {
-  background-color: lightgrey;
-}
-table.lightmode, tr.lightmode, td.lightmode {
-  border: 2px solid black;
-}
-td a div.lightmode:hover {
-  background-color: darkgrey;
-}
-/*#currentLesson {
-  background: lightgrey;
-}
-#currentLesson:hover {
-  background-color: #AAAAAA;
-}*/
 
 /* Other styles */
 h1, h2, p, a, td {
