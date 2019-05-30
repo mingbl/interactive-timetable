@@ -68,11 +68,12 @@
       </table>
       <p id="weekend">NO SCHOOL TODAY! WOOO!!!</p>
       <br><button type="button" name="button" onclick="editTable()">Edit Timetable</button>
-      <button type="button" name="button" onclick="exportTable()">Export</button>
+      <button type="button" name="button" onclick="exportTable('false')" title="Export as string">Export 1</button>
+      <button type="button" name="button" onclick="exportTable('true')" title="Export to URL">Export 2</button>
     </div>
     <div id="creator">
       <h1>Clickable Timetable Creator</h1>
-      <p>Version: 22b - Created by ML</p>
+      <p>Version: 22c - Created by ML</p>
       <section>
         <h2>Lesson Schedule</h2>
         <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell.</p>
@@ -97,7 +98,8 @@
         </div>
       </section>
       <br><button type="button" name="button" onclick="saveEntire()">Save</button>
-      <button type="button" name="button" onclick="importTable()">Import</button>
+      <button type="button" name="button" onclick="importTable()" title="Import from string">Import 1</button>
+      <button type="button" name="button" onclick="importFromUrl()" title="Import from URL">Import 2</button>
       <!--<button type="button" name="button" onclick="showTnames()">Show teacher's names</button>
       <button type="button" name="button" onclick="hideTnames()">Hide teacher's names</button>-->
       <!--<input type="checkbox" id="cnlCheckbox" title="Disable current lesson hightlight" onclick="disableCnl()">-->
@@ -105,6 +107,7 @@
       <input type="color" id="colourBg" title="Background colour" value="#000000" onclick="disableCmc()" style="padding:0px;">
       <input type="color" id="colourTx" title="Table/text colour" value="#FFFFFF" onclick="disableCmc()" style="padding:0px;">
       <input type="checkbox" id="cmcCheckbox" title="Use custom colours" onclick="checkCmc()">
+      <button type="button" name="button" title="Wipe timetable" onclick="wipeTmt()">Wipe</button>
     </div>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
