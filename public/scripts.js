@@ -25,14 +25,12 @@ if (timetableExists === "true") {
     periodFourNodes[i + 1].classList.add(periodFourCodes[i]);
   };
 
-  var tnamesVisible = localStorage.getItem("tnamesVisible");
-
   var subjectOne = document.getElementsByClassName(subjectOneDetails[0]);
   if (subjectOneDetails[1] != "-") {
     for (var i = 0; i < subjectOne.length; i++) {
       subjectOne[i].title = subjectOneDetails[1] + " | " + subjectOneDetails[3];
       subjectOne[i].children[0].children[0].innerHTML += "<br><b>" + subjectOneDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectOne[i].children[0].children[0].innerHTML += "<br>" + subjectOneDetails[3];
       };
       subjectOne[i].children[0].href = subjectOneDetails[2];
@@ -45,7 +43,7 @@ if (timetableExists === "true") {
     for (var i = 0; i < subjectTwo.length; i++) {
       subjectTwo[i].title = subjectTwoDetails[1] + " | " + subjectTwoDetails[3];
       subjectTwo[i].children[0].children[0].innerHTML += "<br><b>" + subjectTwoDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectTwo[i].children[0].children[0].innerHTML += "<br>" + subjectTwoDetails[3];
       };
       subjectTwo[i].children[0].href = subjectTwoDetails[2];
@@ -58,7 +56,7 @@ if (timetableExists === "true") {
     for (var i = 0; i < subjectThree.length; i++) {
       subjectThree[i].title = subjectThreeDetails[1] + " | " + subjectThreeDetails[3];
       subjectThree[i].children[0].children[0].innerHTML += "<br><b>" + subjectThreeDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectThree[i].children[0].children[0].innerHTML += "<br>" + subjectThreeDetails[3];
       };
       subjectThree[i].children[0].href = subjectThreeDetails[2];
@@ -71,7 +69,7 @@ if (timetableExists === "true") {
     for (var i = 0; i < subjectFour.length; i++) {
       subjectFour[i].title = subjectFourDetails[1] + " | " + subjectFourDetails[3];
       subjectFour[i].children[0].children[0].innerHTML += "<br><b>" + subjectFourDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectFour[i].children[0].children[0].innerHTML += "<br>" + subjectFourDetails[3];
       };
       subjectFour[i].children[0].href = subjectFourDetails[2];
@@ -84,7 +82,7 @@ if (timetableExists === "true") {
     for (var i = 0; i < subjectFive.length; i++) {
       subjectFive[i].title = subjectFiveDetails[1] + " | " + subjectFiveDetails[3];
       subjectFive[i].children[0].children[0].innerHTML += "<br><b>" + subjectFiveDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectFive[i].children[0].children[0].innerHTML += "<br>" + subjectFiveDetails[3];
       };
       subjectFive[i].children[0].href = subjectFiveDetails[2];
@@ -97,7 +95,7 @@ if (timetableExists === "true") {
     for (var i = 0; i < subjectSix.length; i++) {
       subjectSix[i].title = subjectSixDetails[1] + " | " + subjectSixDetails[3];
       subjectSix[i].children[0].children[0].innerHTML += "<br><b>" + subjectSixDetails[1] + "</b>";
-      if (tnamesVisible === "true") {
+      if (localStorage["tnamesVisible"]) {
         subjectSix[i].children[0].children[0].innerHTML += "<br>" + subjectSixDetails[3];
       };
       subjectSix[i].children[0].href = subjectSixDetails[2];
@@ -106,10 +104,10 @@ if (timetableExists === "true") {
   };
 
   var calDay = new Date().getDay();
-  //var calDay = 2;
   var calHour = new Date().getHours();
-  //var calHour = 9;
   var calTime;
+  /*calDay = 3;
+  calHour = 8;*/
 
   if (calHour == 7 || calHour == 8) {
     calTime = "periodOne"
@@ -125,7 +123,9 @@ if (timetableExists === "true") {
     document.getElementById("weekend").style.visibility = "visible";
   } else {
     document.getElementById("weekend").style.display = "none";
-    document.getElementById(calTime).children[calDay].children[0].children[0].id = "currentLesson";
+    if (calHour > 6 && calHour < 14) {
+      document.getElementById(calTime).children[calDay].children[0].children[0].id = "currentLesson";
+    }
   }
 } else if (timetableExists === "false") {
   localStorage.setItem("timetableExists", "false");
@@ -192,50 +192,52 @@ function editTable() {
 
 function importTable() {
   var dataImport = prompt("Enter Data:").split(";");
-  var arrayP1 = document.getElementsByClassName("period1codes");
-  for (var i = 0; i < arrayP1.length; i++) {
-    arrayP1[i].value = dataImport[0].split(",")[i]
-  }
-  var arrayP2 = document.getElementsByClassName("period2codes");
-  for (var i = 0; i < arrayP2.length; i++) {
-    arrayP2[i].value = dataImport[1].split(",")[i]
-  }
-  var arrayP3 = document.getElementsByClassName("period3codes");
-  for (var i = 0; i < arrayP3.length; i++) {
-    arrayP3[i].value = dataImport[2].split(",")[i]
-  }
-  var arrayP4 = document.getElementsByClassName("period4codes");
-  for (var i = 0; i < arrayP4.length; i++) {
-    arrayP4[i].value = dataImport[3].split(",")[i]
-  }
-  var arrayS1 = document.getElementsByClassName("subject1details");
-  for (var i = 0; i < arrayS1.length; i++) {
-    arrayS1[i].value = dataImport[4].split(",")[i]
-  }
-  var arrayS2 = document.getElementsByClassName("subject2details");
-  for (var i = 0; i < arrayS2.length; i++) {
-    arrayS2[i].value = dataImport[5].split(",")[i]
-  }
-  var arrayS3 = document.getElementsByClassName("subject3details");
-  for (var i = 0; i < arrayS3.length; i++) {
-    arrayS3[i].value = dataImport[6].split(",")[i]
-  }
-  var arrayS4 = document.getElementsByClassName("subject4details");
-  for (var i = 0; i < arrayS4.length; i++) {
-    arrayS4[i].value = dataImport[7].split(",")[i]
-  }
-  var arrayS5 = document.getElementsByClassName("subject5details");
-  for (var i = 0; i < arrayS5.length; i++) {
-    arrayS5[i].value = dataImport[8].split(",")[i]
-  }
-  var arrayS6 = document.getElementsByClassName("subject6details");
-  for (var i = 0; i < arrayS6.length; i++) {
-    arrayS6[i].value = dataImport[9].split(",")[i]
-  }
-  var completeArray = document.getElementsByClassName("cell");
-  for (var i = 0; i < completeArray.length; i++) {
-    if (completeArray[i].value === "-" || completeArray[i].value === "#" || completeArray[i].value === "undefined") {
-      completeArray[i].value = ""
+  if (dataImport != "") {
+    var arrayP1 = document.getElementsByClassName("period1codes");
+    for (var i = 0; i < arrayP1.length; i++) {
+      arrayP1[i].value = dataImport[0].split(",")[i]
+    }
+    var arrayP2 = document.getElementsByClassName("period2codes");
+    for (var i = 0; i < arrayP2.length; i++) {
+      arrayP2[i].value = dataImport[1].split(",")[i]
+    }
+    var arrayP3 = document.getElementsByClassName("period3codes");
+    for (var i = 0; i < arrayP3.length; i++) {
+      arrayP3[i].value = dataImport[2].split(",")[i]
+    }
+    var arrayP4 = document.getElementsByClassName("period4codes");
+    for (var i = 0; i < arrayP4.length; i++) {
+      arrayP4[i].value = dataImport[3].split(",")[i]
+    }
+    var arrayS1 = document.getElementsByClassName("subject1details");
+    for (var i = 0; i < arrayS1.length; i++) {
+      arrayS1[i].value = dataImport[4].split(",")[i]
+    }
+    var arrayS2 = document.getElementsByClassName("subject2details");
+    for (var i = 0; i < arrayS2.length; i++) {
+      arrayS2[i].value = dataImport[5].split(",")[i]
+    }
+    var arrayS3 = document.getElementsByClassName("subject3details");
+    for (var i = 0; i < arrayS3.length; i++) {
+      arrayS3[i].value = dataImport[6].split(",")[i]
+    }
+    var arrayS4 = document.getElementsByClassName("subject4details");
+    for (var i = 0; i < arrayS4.length; i++) {
+      arrayS4[i].value = dataImport[7].split(",")[i]
+    }
+    var arrayS5 = document.getElementsByClassName("subject5details");
+    for (var i = 0; i < arrayS5.length; i++) {
+      arrayS5[i].value = dataImport[8].split(",")[i]
+    }
+    var arrayS6 = document.getElementsByClassName("subject6details");
+    for (var i = 0; i < arrayS6.length; i++) {
+      arrayS6[i].value = dataImport[9].split(",")[i]
+    }
+    var completeArray = document.getElementsByClassName("cell");
+    for (var i = 0; i < completeArray.length; i++) {
+      if (completeArray[i].value === "-" || completeArray[i].value === "#" || completeArray[i].value === "undefined") {
+        completeArray[i].value = ""
+      }
     }
   }
 };
@@ -248,7 +250,7 @@ function exportTable() {
   for (var i = 1; i < 7; i++) {
     completeCodes += localStorage.getItem("subject" + [i] + "detailsSaved") + ";"
   };
-  prompt("Export Data:", completeCodes);
+  prompt("Export Data:\n(Save this in case your local storage is wiped)", completeCodes);
 }
 
 /*function showTnames() {
@@ -259,16 +261,89 @@ function hideTnames() {
   localStorage.setItem("tnamesVisible", "false")
 }*/
 
-function toggleTnames() {
+/*function toggleTnames() {
   if (localStorage.getItem("tnamesVisible") === "true") {
     localStorage.setItem("tnamesVisible", "false")
   } else {
     localStorage.setItem("tnamesVisible", "true")
   }
 }
-if (tnamesVisible === "true") {
+if (localStorage["tnamesVisible"]) {
   tableCells = document.getElementsByTagName("td");
   for (var i = 0; i < tableCells.length; i++) {
     tableCells[i].classList.add("extended")
   }
+}*/
+function checkTnames() {
+  if (document.getElementById("tnamesCheckbox").checked == true) {
+    localStorage.setItem("tnamesVisible", "true");
+  } else {
+    localStorage.removeItem("tnamesVisible")
+  }
 }
+//checkTnames()
+if (localStorage["tnamesVisible"]) {
+  document.getElementById("tnamesCheckbox").checked = true;
+  tableCells = document.getElementsByTagName("td");
+  for (var i = 0; i < tableCells.length; i++) {
+    tableCells[i].classList.add("extended")
+  };
+}
+
+if (localStorage["bgColour"]) {
+  setColours(localStorage.getItem("bgColour"), localStorage.getItem("txColour"));
+  document.getElementById("colourBg").value = localStorage.getItem("bgColour");
+  document.getElementById("colourTx").value = localStorage.getItem("txColour");
+}
+if (localStorage["cmcChecked"]) {
+  document.getElementById("cmcCheckbox").checked = true
+}
+function disableCmc() {
+  document.getElementById("cmcCheckbox").checked = false;
+  checkCmc()
+}
+function checkCmc() {
+  if (document.getElementById("cmcCheckbox").checked == true) {
+    localStorage.setItem("bgColour", document.getElementById("colourBg").value);
+    localStorage.setItem("txColour", document.getElementById("colourTx").value);
+    setColours(localStorage.getItem("bgColour"), localStorage.getItem("txColour"));
+    localStorage.setItem("cmcChecked", "true");
+  } else {
+    localStorage.removeItem("bgColour");
+    localStorage.removeItem("txColour");
+    setColours("black", "white");
+    localStorage.removeItem("cmcChecked");
+  }
+}
+function setColours(bgColour, txColour) {
+  document.body.style.backgroundColor = bgColour;
+  setTxColour1(document.querySelectorAll("h1,h2,p,a,td"));
+  setTxColour2(document.querySelectorAll("table,tr,td"));
+
+  function setTxColour1(array) {
+    for (var i = 0; i < array.length; i++) {
+      array[i].style.color = txColour;
+    }
+  }
+  function setTxColour2(array) {
+    for (var i = 0; i < array.length; i++) {
+      array[i].style.borderColor = txColour;
+    }
+  }
+  /*for (var i = 0; i < document.getElementsByTagName("td").length; i++) {
+    document.getElementsByTagName("td")[i].style.borderColor = txColour;
+  }*/
+}
+
+/*function disableCnl() {
+  if (document.getElementById("cnlCheckbox").checked == true) {
+    localStorage.setItem("disableCnl", "true");
+  } else {
+    localStorage.removeItem("disableCnl")
+  }
+}
+if (localStorage["disableCnl"]) {
+  document.getElementById("cnlCheckbox").checked = true;
+} else {
+  document.getElementById("currentLesson").style.backgroundColor = "grey"
+}*/
