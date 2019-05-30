@@ -68,10 +68,11 @@
       </table>
       <p id="weekend">NO SCHOOL TODAY! WOOO!!!</p>
       <br><button type="button" name="button" onclick="editTable()">Edit Timetable</button>
+      <button type="button" name="button" onclick="exportTable()">Export</button>
     </div>
     <div id="creator">
       <h1>Clickable Timetable Creator</h1>
-      <p>Version: 22a - Created by ML</p>
+      <p>Version: 22b - Created by ML</p>
       <section>
         <h2>Lesson Schedule</h2>
         <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell.</p>
@@ -84,7 +85,7 @@
       </section>
       <section>
         <h2>Collaborate Links</h2>
-        <p>For each of your subjects, type the subject code (ENG, MAG, etc.) in the first cell, the name of the subject (English, Maths, etc.) in the second cell, and the lesson link in the third cell.<br>Type your teacher's name in the fourth cell and include their title (Mr/Mrs/Ms/Miss) so you'll know which one to use in case you need to email them.<br>(CELL 1: Subject code | CELL 2: Subject name | CELL 3: Lesson link | CELL 4: Teacher's name)</p>
+        <p>For each of your subjects, type the subject code (ENG, MAG, etc.) in the first cell, the name of the subject (English, Maths, etc.) in the second cell, and the lesson link in the third cell.<br>Optionally, type your teacher's name in the fourth cell and include their title (Mr/Mrs/Ms/Miss) so you'll know which one to use in case you need to email them.<br>(CELL 1: Subject code | CELL 2: Subject name | CELL 3: Lesson link | CELL 4 (Optional): Teacher's name)</p>
         <p>To get the lesson link of your class, log into Blackboard and go to where you'd normally click on your teacher's or class' name before being sent to the "Room Details" page.<br>Right click on the hyperlink and copy the url. The link should start with <u>https://elearn.eq.edu.au/webapps/bb-collaborate-bb_bb60/</u></p>
         <div id="classes">
           <input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><br>
@@ -97,10 +98,13 @@
       </section>
       <br><button type="button" name="button" onclick="saveEntire()">Save</button>
       <button type="button" name="button" onclick="importTable()">Import</button>
-      <button type="button" name="button" onclick="exportTable()">Export</button>
       <!--<button type="button" name="button" onclick="showTnames()">Show teacher's names</button>
       <button type="button" name="button" onclick="hideTnames()">Hide teacher's names</button>-->
-      <button type="button" name="button" onclick="toggleTnames()">Toggle teacher names visibility</button>
+      <!--<input type="checkbox" id="cnlCheckbox" title="Disable current lesson hightlight" onclick="disableCnl()">-->
+      <input type="checkbox" id="tnamesCheckbox" title="Show teacher names" onclick="checkTnames()">
+      <input type="color" id="colourBg" title="Background colour" value="#000000" onclick="disableCmc()" style="padding:0px;">
+      <input type="color" id="colourTx" title="Table/text colour" value="#FFFFFF" onclick="disableCmc()" style="padding:0px;">
+      <input type="checkbox" id="cmcCheckbox" title="Use custom colours" onclick="checkCmc()">
     </div>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
