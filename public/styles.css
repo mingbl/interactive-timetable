@@ -7,12 +7,13 @@ h1, h2, p, a, td {
 table, tr, td {
   border-color: white
 }
-
-td.nonactive > a > div:hover, td.nonactive > a > div#currentLesson:hover {
+td.valid {
+  transition: .25s ease
+}
+td.valid:hover, td.valid#active:hover {
   background-color: lightgrey;
 }
-td.nonactive > a > div#currentLesson {
-  /*background: #555555;*/
+td#active {
   background-color: grey;
 }
 input {
@@ -25,7 +26,6 @@ table, tr, td {
   border: 1px solid;
 }
 
-/* Other styles */
 h1, h2, p, a, td {
   font-family: helvetica;
 }
@@ -80,22 +80,6 @@ a {
   text-decoration: none
 }
 
-/* Subject colours
-td.sub1 {
-  background-color: darkred
+p#weekend {
+  display: none
 }
-td.sub2 {
-  background-color: darkblue
-}
-td.sub3 {
-  background-color: darkgreen
-}
-td.sub4 {
-  background-color: yellow
-}
-td.sub5 {
-  background-color: purple
-}
-td.sub6 {
-  background-color: orange
-} */
