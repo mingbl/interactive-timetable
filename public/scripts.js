@@ -1,396 +1,300 @@
-var timetableExists = localStorage.getItem("timetableExists");
-if (timetableExists === "true") {
-  document.getElementById("creator").style.display = "none";
-  var periodOneNodes = document.getElementById("periodOne").children;
-  var periodTwoNodes = document.getElementById("periodTwo").children;
-  var periodThreeNodes = document.getElementById("periodThree").children;
-  var periodFourNodes = document.getElementById("periodFour").children;
+// Support for older versions
+{
+  if (localStorage["timetableExists"]) {
+    localStorage.setItem("TIMETABLE", "true");
+    localStorage.removeItem("timetableExists")
+  };
+  if (localStorage["period1codesSaved"]) {
+    localStorage.setItem("PERIODS", localStorage.getItem("period1codesSaved") + "," + localStorage.getItem("period2codesSaved") + "," + localStorage.getItem("period3codesSaved") + "," + localStorage.getItem("period4codesSaved"));
+    localStorage.setItem("SUBJECT1", localStorage.getItem("subject1detailsSaved"));
+    localStorage.setItem("SUBJECT2", localStorage.getItem("subject2detailsSaved"));
+    localStorage.setItem("SUBJECT3", localStorage.getItem("subject3detailsSaved"));
+    localStorage.setItem("SUBJECT4", localStorage.getItem("subject4detailsSaved"));
+    localStorage.setItem("SUBJECT5", localStorage.getItem("subject5detailsSaved"));
+    localStorage.setItem("SUBJECT6", localStorage.getItem("subject6detailsSaved"));
+    let subjects = ["subject1detailsSaved", "subject2detailsSaved", "subject3detailsSaved", "subject4detailsSaved", "subject5detailsSaved", "subject6detailsSaved"];
+    for (subject in subjects) {
+      localStorage.removeItem(subject)
+    }
+  };
+  if (localStorage["tnamesVisible"]) {
+    localStorage.setItem("USE-TNAMES", "true");
+    localStorage.removeItem("tnamesVisible")
+  };
+  if (localStorage["bgColour"]) {
+    localStorage.setItem("COLOUR-BG", localStorage.getItem("bgColour"));
+    localStorage.setItem("COLOUR-TX", localStorage.getItem("txColour"));
+    localStorage.setItem("USE-COLOURS", "true");
+    localStorage.removeItem("bgColour");
+    localStorage.removeItem("txColour");
+  };
+};
 
-  var periodOneCodes = localStorage.getItem("period1codesSaved").split(",");
-  var periodTwoCodes = (localStorage.getItem("period2codesSaved")).split(",");
-  var periodThreeCodes = (localStorage.getItem("period3codesSaved")).split(",");
-  var periodFourCodes = (localStorage.getItem("period4codesSaved")).split(",");
+// Initialise variables
+var numPeriods = 4;
+var numDays = 5;
+var numSubjects = 6;
+var numDetails = 4;
 
-  var subjectOneDetails = (localStorage.getItem("subject1detailsSaved")).split(",");
-  var subjectTwoDetails = (localStorage.getItem("subject2detailsSaved")).split(",");
-  var subjectThreeDetails = (localStorage.getItem("subject3detailsSaved")).split(",");
-  var subjectFourDetails = (localStorage.getItem("subject4detailsSaved")).split(",");
-  var subjectFiveDetails = (localStorage.getItem("subject5detailsSaved")).split(",");
-  var subjectSixDetails = (localStorage.getItem("subject6detailsSaved")).split(",");
+if (!localStorage["TIMETABLE"]) {
 
-  for (var i = 0; i < 5; i++) {
-    periodOneNodes[i + 1].classList.add(periodOneCodes[i]);
-    periodTwoNodes[i + 1].classList.add(periodTwoCodes[i]);
-    periodThreeNodes[i + 1].classList.add(periodThreeCodes[i]);
-    periodFourNodes[i + 1].classList.add(periodFourCodes[i]);
+  // Hide timetable
+  document.getElementById("timetable").style.display = "none";
+
+  // Create lesson schedule inputs
+  let inputPeriodsContainer = document.getElementById("periods");
+  for (var period = 0; period < numPeriods; period++) {
+    for (var day = 0; day < numDays; day++) {
+      let input = document.createElement("input");
+      input.type = "text";
+      input.className = "input-periods";
+      inputPeriodsContainer.appendChild(input);
+    };
+    inputPeriodsContainer.appendChild(document.createElement("br"));
   };
 
-  var subjectOne = document.getElementsByClassName(subjectOneDetails[0]);
-  if (subjectOneDetails[1] != "-") {
-    for (var i = 0; i < subjectOne.length; i++) {
-      subjectOne[i].title = subjectOneDetails[1] + " | " + subjectOneDetails[3];
-      subjectOne[i].children[0].children[0].innerHTML += "<br><b>" + subjectOneDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectOne[i].children[0].children[0].innerHTML += "<br>" + subjectOneDetails[3];
+  // Create subject details inputs
+  let inputSubjectsContainer = document.getElementById("subjects");
+  for (var subject = 1; subject < numSubjects + 1; subject++) {
+    for (var detail = 0; detail < numDetails; detail++) {
+      let input = document.createElement("input");
+      input.type = "text";
+      input.className = "input-subject-" + subject;
+      inputSubjectsContainer.appendChild(input);
+    };
+    inputSubjectsContainer.appendChild(document.createElement("br"));
+  };
+
+  // Save data to local storage
+  function save() {
+
+    // Ensure subject codes are present in the lesson schedule
+    let periods = [""];
+    for (var subject = 1; subject < numSubjects + 1; subject++) {
+      periods[subject - 1] = document.getElementsByClassName("input-subject-" + subject)[0].value
+    };
+
+    let inputPeriods = document.getElementsByClassName("input-periods");
+    for (var i = 0; i < inputPeriods.length; i++) {
+      if (inputPeriods[i].value != "" && periods.indexOf(inputPeriods[i].value) == -1) {
+        alert("The subject code '" + inputPeriods[i].value + "' (Cell " + (i + 1) + ") is not present within the subject details.");
+        return
+      }
+    };
+
+    localStorage.setItem("PERIODS", compile(document.getElementsByClassName("input-periods")));
+
+    for (var subject = 1; subject < numSubjects + 1; subject++) {
+      localStorage.setItem("SUBJECT" + subject, compile(document.getElementsByClassName("input-subject-" + subject)));
+    };
+
+    // Function for replacing empty cells with "-"
+    function compile(input) {
+      let output = [""];
+
+      for (var i = 0; i < input.length; i++) {
+        if (input[i].value) {
+          output[i] = input[i].value
+        } else {
+          output[i] = "-"
+        }
       };
-      subjectOne[i].children[0].href = subjectOneDetails[2];
-      subjectOne[i].classList.add("nonactive", "sub1")
+
+      return output
+    };
+
+    localStorage.setItem("TIMETABLE", "true");
+    location.reload()
+  };
+
+  // Function for importing data from local storage
+  function importData() {
+    let periods = localStorage.getItem("PERIODS").split(",")
+    for (var period = 0; period < numPeriods * numDays; period++) {
+      if (periods[period] != "-") {
+        document.getElementsByClassName("input-periods")[period].value = periods[period]
+      } else {
+        document.getElementsByClassName("input-periods")[period].value = ""
+      }
+    };
+
+    for (var subject = 1; subject < numSubjects + 1; subject++) {
+      if (localStorage["SUBJECT" + subject]) {
+        let details = localStorage.getItem("SUBJECT" + subject).split(",");
+        for (var detail = 0; detail < numDetails; detail++) {
+          if (details[detail] != "-" && details[detail] != "#") {
+            document.getElementsByClassName("input-subject-" + subject)[detail].value = details[detail]
+          } else {
+            document.getElementsByClassName("input-subject-" + subject)[detail].value = ""
+          }
+        }
+      }
     }
   };
 
-  var subjectTwo = document.getElementsByClassName(subjectTwoDetails[0]);
-  if (subjectTwoDetails[1] != "-") {
-    for (var i = 0; i < subjectTwo.length; i++) {
-      subjectTwo[i].title = subjectTwoDetails[1] + " | " + subjectTwoDetails[3];
-      subjectTwo[i].children[0].children[0].innerHTML += "<br><b>" + subjectTwoDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectTwo[i].children[0].children[0].innerHTML += "<br>" + subjectTwoDetails[3];
-      };
-      subjectTwo[i].children[0].href = subjectTwoDetails[2];
-      subjectTwo[i].classList.add("nonactive", "sub2")
-    }
+  // Import data from local storage if available
+  if (localStorage["PERIODS"]) {
+    importData()
   };
 
-  var subjectThree = document.getElementsByClassName(subjectThreeDetails[0]);
-  if (subjectThreeDetails[1] != "-") {
-    for (var i = 0; i < subjectThree.length; i++) {
-      subjectThree[i].title = subjectThreeDetails[1] + " | " + subjectThreeDetails[3];
-      subjectThree[i].children[0].children[0].innerHTML += "<br><b>" + subjectThreeDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectThree[i].children[0].children[0].innerHTML += "<br>" + subjectThreeDetails[3];
-      };
-      subjectThree[i].children[0].href = subjectThreeDetails[2];
-      subjectThree[i].classList.add("nonactive", "sub3")
-    }
+  // Import data from external source and save to local storage
+  function importExt(source) {
+
+    if (source === "URL") {
+      var dataImport = window.location.href.toString().split("#");
+      if (dataImport[1]) {
+        dataImport.shift();
+        dataImport = dataImport.toString().replace(/%20/g, " ");
+      } else {
+        return
+      }
+    } else if (source === "TXT") {
+      var dataImport = prompt("Enter Data:");
+      if (dataImport == "" || dataImport == null) {
+        return
+      }
+    };
+
+    dataImport = dataImport.split(";");
+
+    // Support for older versions
+    if (dataImport.length == 11) {
+      dataImport[3] = dataImport[0] + "," + dataImport[1] + "," + dataImport[2] + "," + dataImport[3];
+      dataImport.shift(); dataImport.shift(); dataImport.shift();
+      alert("Be sure to update your bookmark after editing.")
+    };
+
+    localStorage.setItem("PERIODS", dataImport[0]);
+
+    for (var i = 1; i < numSubjects; i++) {
+      localStorage.setItem("SUBJECT" + i, dataImport[i])
+    };
+
+    importData()
   };
 
-  var subjectFour = document.getElementsByClassName(subjectFourDetails[0]);
-  if (subjectFourDetails[1] != "-") {
-    for (var i = 0; i < subjectFour.length; i++) {
-      subjectFour[i].title = subjectFourDetails[1] + " | " + subjectFourDetails[3];
-      subjectFour[i].children[0].children[0].innerHTML += "<br><b>" + subjectFourDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectFour[i].children[0].children[0].innerHTML += "<br>" + subjectFourDetails[3];
-      };
-      subjectFour[i].children[0].href = subjectFourDetails[2];
-      subjectFour[i].classList.add("nonactive", "sub4")
-    }
+  // Function for checking checkboxes
+  function check(box, override) {
+    if (document.getElementById(box.toLowerCase()).checked && override != "DISABLE") {
+      localStorage.setItem("USE-" + box, "true");
+      if (box === "COLOURS") {
+        setColours(document.getElementById("colourBg").value, document.getElementById("colourTx").value, "FALSE")
+      }
+    } else {
+      document.getElementById(box.toLowerCase()).checked = false;
+      localStorage.removeItem("USE-" + box);
+      if (box === "COLOURS") {
+        setColours("black", "white", "true")
+      }
+    };
   };
 
-  var subjectFive = document.getElementsByClassName(subjectFiveDetails[0]);
-  if (subjectFiveDetails[1] != "-") {
-    for (var i = 0; i < subjectFive.length; i++) {
-      subjectFive[i].title = subjectFiveDetails[1] + " | " + subjectFiveDetails[3];
-      subjectFive[i].children[0].children[0].innerHTML += "<br><b>" + subjectFiveDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectFive[i].children[0].children[0].innerHTML += "<br>" + subjectFiveDetails[3];
-      };
-      subjectFive[i].children[0].href = subjectFiveDetails[2];
-      subjectFive[i].classList.add("nonactive", "sub5")
-    }
-  };
-
-  var subjectSix = document.getElementsByClassName(subjectSixDetails[0]);
-  if (subjectSixDetails[1] != "-") {
-    for (var i = 0; i < subjectSix.length; i++) {
-      subjectSix[i].title = subjectSixDetails[1] + " | " + subjectSixDetails[3];
-      subjectSix[i].children[0].children[0].innerHTML += "<br><b>" + subjectSixDetails[1] + "</b>";
-      if (localStorage["tnamesVisible"]) {
-        subjectSix[i].children[0].children[0].innerHTML += "<br>" + subjectSixDetails[3];
-      };
-      subjectSix[i].children[0].href = subjectSixDetails[2];
-      subjectSix[i].classList.add("nonactive", "sub6")
-    }
-  };
-
-  var calDay = new Date().getDay();
-  var calHour = new Date().getHours();
-  var calTime;
-  /*calDay = 3;
-  calHour = 8;*/
-
-  if (calHour == 7 || calHour == 8) {
-    calTime = "periodOne"
-  } else if (calHour == 9) {
-    calTime = "periodTwo"
-  } else if (calHour == 10 || calHour == 11) {
-    calTime = "periodThree"
-  } else if (calHour == 12 || calHour == 13) {
-    calTime = "periodFour"
-  };
-
-  if (calDay == 0 || calDay == 6) {
-    document.getElementById("weekend").style.visibility = "visible";
-  } else {
-    document.getElementById("weekend").style.display = "none";
-    if (calHour > 6 && calHour < 14) {
-      document.getElementById(calTime).children[calDay].children[0].children[0].id = "currentLesson";
+  function wipe() {
+    if (confirm("Are you sure you want to wipe your timetable?")) {
+      localStorage.clear();
+      location.reload()
     }
   }
-} else if (timetableExists === "false") {
-  localStorage.setItem("timetableExists", "false");
-  document.getElementById("timetable").style.display = "none";
-  function saveEntire() {
-    localStorage.setItem("period1codesSaved", saveData("period1codes"));
-    localStorage.setItem("period2codesSaved", saveData("period2codes"));
-    localStorage.setItem("period3codesSaved", saveData("period3codes"));
-    localStorage.setItem("period4codesSaved", saveData("period4codes"));
-    localStorage.setItem("subject1detailsSaved", saveData("subject1details"));
-    localStorage.setItem("subject2detailsSaved", saveData("subject2details"));
-    localStorage.setItem("subject3detailsSaved", saveData("subject3details"));
-    localStorage.setItem("subject4detailsSaved", saveData("subject4details"));
-    localStorage.setItem("subject5detailsSaved", saveData("subject5details"));
-    localStorage.setItem("subject6detailsSaved", saveData("subject6details"));
-    localStorage.setItem("timetableExists", "true");
+
+} else {
+
+  // Hide creator
+  document.getElementById("creator").style.display = "none";
+
+  for (var a = 1; a < numDays; a++) {
+    for (var i = 1; i < numPeriods + 2; i++) {
+      // Select HTML cell
+      let cellContainer = document.getElementById("Period" + a);
+      let cell = cellContainer.children[i];
+
+      cell.classList.add("session");
+    }
+  };
+
+  // Add subject class to relevant cells
+  let sessions = document.getElementsByClassName("session");
+  let codes = localStorage.getItem("PERIODS").split(",");
+  for (var i = 0; i < sessions.length; i++) {
+    if (codes[i] != "-") {
+      sessions[i].classList.add(codes[i])
+    }
+  };
+
+  // Add details to cells with subject class
+  for (var i = 1; i < numSubjects + 1; i++) {
+    let details = localStorage.getItem("SUBJECT" + i).split(",");
+    let subject = document.getElementsByClassName(details[0]);
+    for (var a = 0; a < subject.length; a++) {
+      subject[a].title = details[1] + " | " + details[3];
+      subject[a].children[0].children[0].innerHTML += "<br><b>" + details[1] + "</b>";
+      if (localStorage["USE-TNAMES"]) {
+        subject[a].children[0].children[0].innerHTML += "<br>" + details[3]
+      };
+      subject[a].children[0].href = details[2];
+      subject[a].classList.add("valid")
+    }
+  };
+
+  // Add id to current lesson
+  let day = new Date().getDay();
+  let hour = new Date().getHours();
+
+  if (day != 0 && day != 6) {
+    switch (hour) {
+      case 7: case 8:
+        document.getElementById("Period1").children[day].id = "active"
+        break;
+      case 9:
+        document.getElementById("Period2").children[day].id = "active"
+        break;
+      case 10: case 11:
+        document.getElementById("Period3").children[day].id = "active"
+        break;
+      case 12: case 13:
+        document.getElementById("Period4").children[day].id = "active"
+        break;
+    }
+  } else {
+    document.getElementById("weekend").style.display = "block"
+  };
+
+  function edit() {
+    localStorage.removeItem("TIMETABLE");
     location.reload();
   };
 
-  function saveData(dataClass) {
-    var dataArray = document.getElementsByClassName(dataClass)
-    var dataTemp = [""]
-    for (var i = 0; i < dataArray.length; i++) {
-       if (dataArray[i].value) {
-         dataTemp[i] = dataArray[i].value
-       } else {
-         dataTemp[i] = "-"
-       }
+  function exportExt(type) {
+    let compiled = localStorage.getItem("PERIODS");
+    for (var subject = 1; subject < numSubjects + 1; subject++) {
+      compiled += ";" + localStorage.getItem("SUBJECT" + subject)
     };
-    /*if (dataClass.includes("subject") && dataTemp[2] === "-") {
-      dataTemp[2] = "#"
-    };*/
-    return dataTemp
-  };
-
-  for (var i = 0; i < 5; i++) {
-    document.getElementsByClassName("period1codes")[i].value = localStorage.getItem("period1codesSaved").split(",")[i];
-    document.getElementsByClassName("period2codes")[i].value = localStorage.getItem("period2codesSaved").split(",")[i];
-    document.getElementsByClassName("period3codes")[i].value = localStorage.getItem("period3codesSaved").split(",")[i];
-    document.getElementsByClassName("period4codes")[i].value = localStorage.getItem("period4codesSaved").split(",")[i];
-  };
-  for (var i = 0; i < 4; i++) {
-    document.getElementsByClassName("subject1details")[i].value = localStorage.getItem("subject1detailsSaved").split(",")[i];
-    document.getElementsByClassName("subject2details")[i].value = localStorage.getItem("subject2detailsSaved").split(",")[i];
-    document.getElementsByClassName("subject3details")[i].value = localStorage.getItem("subject3detailsSaved").split(",")[i];
-    document.getElementsByClassName("subject4details")[i].value = localStorage.getItem("subject4detailsSaved").split(",")[i];
-    document.getElementsByClassName("subject5details")[i].value = localStorage.getItem("subject5detailsSaved").split(",")[i];
-    document.getElementsByClassName("subject6details")[i].value = localStorage.getItem("subject6detailsSaved").split(",")[i];
-  };
-  var completeArray = document.getElementsByClassName("cell");
-  for (var i = 0; i < completeArray.length; i++) {
-    if (completeArray[i].value === "-" || completeArray[i].value === "#") {
-      completeArray[i].value = ""
+    if (type === "URL") {
+      window.location = "#" + compiled;
+      alert("Export successful. You can bookmark this URL and go to Edit Timetable > Import URL if your timetable disappears.")
+    } else if (type === "TXT") {
+      prompt("Export Data:\n(Save this to a txt file in case your local storage is wiped)", compiled)
     }
-  }
-} else {
-  localStorage.setItem("timetableExists", "false");
-  location.reload()
-}
-function editTable() {
-  localStorage.setItem("timetableExists", "false");
-  location.reload();
-}
-
-function importTable() {
-  var dataImport = prompt("Enter Data:")
-  if (dataImport != "" && dataImport != null) {
-    dataImport = dataImport.split(";");
-    var arrayP1 = document.getElementsByClassName("period1codes");
-    for (var i = 0; i < arrayP1.length; i++) {
-      arrayP1[i].value = dataImport[0].split(",")[i]
-    }
-    var arrayP2 = document.getElementsByClassName("period2codes");
-    for (var i = 0; i < arrayP2.length; i++) {
-      arrayP2[i].value = dataImport[1].split(",")[i]
-    }
-    var arrayP3 = document.getElementsByClassName("period3codes");
-    for (var i = 0; i < arrayP3.length; i++) {
-      arrayP3[i].value = dataImport[2].split(",")[i]
-    }
-    var arrayP4 = document.getElementsByClassName("period4codes");
-    for (var i = 0; i < arrayP4.length; i++) {
-      arrayP4[i].value = dataImport[3].split(",")[i]
-    }
-    var arrayS1 = document.getElementsByClassName("subject1details");
-    for (var i = 0; i < arrayS1.length; i++) {
-      arrayS1[i].value = dataImport[4].split(",")[i]
-    }
-    var arrayS2 = document.getElementsByClassName("subject2details");
-    for (var i = 0; i < arrayS2.length; i++) {
-      arrayS2[i].value = dataImport[5].split(",")[i]
-    }
-    var arrayS3 = document.getElementsByClassName("subject3details");
-    for (var i = 0; i < arrayS3.length; i++) {
-      arrayS3[i].value = dataImport[6].split(",")[i]
-    }
-    var arrayS4 = document.getElementsByClassName("subject4details");
-    for (var i = 0; i < arrayS4.length; i++) {
-      arrayS4[i].value = dataImport[7].split(",")[i]
-    }
-    var arrayS5 = document.getElementsByClassName("subject5details");
-    for (var i = 0; i < arrayS5.length; i++) {
-      arrayS5[i].value = dataImport[8].split(",")[i]
-    }
-    var arrayS6 = document.getElementsByClassName("subject6details");
-    for (var i = 0; i < arrayS6.length; i++) {
-      arrayS6[i].value = dataImport[9].split(",")[i]
-    }
-    var completeArray = document.getElementsByClassName("cell");
-    for (var i = 0; i < completeArray.length; i++) {
-      if (completeArray[i].value === "-" || completeArray[i].value === "#" || completeArray[i].value === "undefined") {
-        completeArray[i].value = ""
-      }
-    }
-  } else {
-    alert("No data found.")
-  }
-};
-
-function importFromUrl() {
-  var dataImport = window.location.href.toString().split("#")
-  if (dataImport[1]) {
-    dataImport.shift();
-    dataImport = dataImport.toString().replace(/%20/g, " ");
-    //dataImport = decodeURI(dataImport).toString();
-    //alert(dataImport);
-    dataImport = dataImport.split(";");
-  } else {
-    dataImport = ""
-  }
-  if (dataImport != "") {
-    var arrayP1 = document.getElementsByClassName("period1codes");
-    for (var i = 0; i < arrayP1.length; i++) {
-      arrayP1[i].value = dataImport[0].split(",")[i]
-    }
-    var arrayP2 = document.getElementsByClassName("period2codes");
-    for (var i = 0; i < arrayP2.length; i++) {
-      arrayP2[i].value = dataImport[1].split(",")[i]
-    }
-    var arrayP3 = document.getElementsByClassName("period3codes");
-    for (var i = 0; i < arrayP3.length; i++) {
-      arrayP3[i].value = dataImport[2].split(",")[i]
-    }
-    var arrayP4 = document.getElementsByClassName("period4codes");
-    for (var i = 0; i < arrayP4.length; i++) {
-      arrayP4[i].value = dataImport[3].split(",")[i]
-    }
-    var arrayS1 = document.getElementsByClassName("subject1details");
-    for (var i = 0; i < arrayS1.length; i++) {
-      arrayS1[i].value = dataImport[4].split(",")[i]
-    }
-    var arrayS2 = document.getElementsByClassName("subject2details");
-    for (var i = 0; i < arrayS2.length; i++) {
-      arrayS2[i].value = dataImport[5].split(",")[i]
-    }
-    var arrayS3 = document.getElementsByClassName("subject3details");
-    for (var i = 0; i < arrayS3.length; i++) {
-      arrayS3[i].value = dataImport[6].split(",")[i]
-    }
-    var arrayS4 = document.getElementsByClassName("subject4details");
-    for (var i = 0; i < arrayS4.length; i++) {
-      arrayS4[i].value = dataImport[7].split(",")[i]
-    }
-    var arrayS5 = document.getElementsByClassName("subject5details");
-    for (var i = 0; i < arrayS5.length; i++) {
-      arrayS5[i].value = dataImport[8].split(",")[i]
-    }
-    var arrayS6 = document.getElementsByClassName("subject6details");
-    for (var i = 0; i < arrayS6.length; i++) {
-      arrayS6[i].value = dataImport[9].split(",")[i]
-    }
-    var completeArray = document.getElementsByClassName("cell");
-    for (var i = 0; i < completeArray.length; i++) {
-      if (completeArray[i].value === "-"/* || completeArray[i].value === "#" || completeArray[i].value === "undefined"*/) {
-        completeArray[i].value = ""
-      }
-    }
-  } else {
-    alert("No data found.")
   }
 }
 
-function exportTable(toUrl) {
-  var completeCodes = "";
-  for (var i = 1; i < 5; i++) {
-    completeCodes += localStorage.getItem("period" + [i] + "codesSaved") + ";"
-  };
-  for (var i = 1; i < 7; i++) {
-    completeCodes += localStorage.getItem("subject" + [i] + "detailsSaved") + ";"
-  };
-  if (toUrl === "true") {
-    window.location = "#" + completeCodes;
-    alert("Export successful. You can bookmark this URL and go to Edit Timetable > Import 2 if your timetable disappears.")
-  } else {
-    prompt("Export Data:\n(Save this in case your local storage is wiped)", completeCodes);
-  }
-}
-
-/*function showTnames() {
-  localStorage.setItem("tnamesVisible", "true")
-}
-
-function hideTnames() {
-  localStorage.setItem("tnamesVisible", "false")
-}*/
-
-/*function toggleTnames() {
-  if (localStorage.getItem("tnamesVisible") === "true") {
-    localStorage.setItem("tnamesVisible", "false")
-  } else {
-    localStorage.setItem("tnamesVisible", "true")
-  }
-}
-if (localStorage["tnamesVisible"]) {
-  tableCells = document.getElementsByTagName("td");
-  for (var i = 0; i < tableCells.length; i++) {
-    tableCells[i].classList.add("extended")
-  }
-}*/
-function checkTnames() {
-  if (document.getElementById("tnamesCheckbox").checked == true) {
-    localStorage.setItem("tnamesVisible", "true");
-  } else {
-    localStorage.removeItem("tnamesVisible")
-  }
-}
-//checkTnames()
-if (localStorage["tnamesVisible"]) {
-  document.getElementById("tnamesCheckbox").checked = true;
+if (localStorage["USE-TNAMES"]) {
+  document.getElementById("tnames").checked = true;
   tableCells = document.getElementsByTagName("td");
   for (var i = 0; i < tableCells.length; i++) {
     tableCells[i].classList.add("extended")
   };
 }
 
-if (localStorage["bgColour"]) {
-  setColours(localStorage.getItem("bgColour"), localStorage.getItem("txColour"));
-  document.getElementById("colourBg").value = localStorage.getItem("bgColour");
-  document.getElementById("colourTx").value = localStorage.getItem("txColour");
+if (localStorage["USE-COLOURS"]) {
+  document.getElementById("colours").checked = true;
+  document.getElementById("colourBg").value = localStorage.getItem("COLOUR-BG");
+  document.getElementById("colourTx").value = localStorage.getItem("COLOUR-TX");
+  setColours(localStorage.getItem("COLOUR-BG"), localStorage.getItem("COLOUR-TX"))
 }
-if (localStorage["cmcChecked"]) {
-  document.getElementById("cmcCheckbox").checked = true
-}
-function disableCmc() {
-  document.getElementById("cmcCheckbox").checked = false;
-  checkCmc()
-}
-function checkCmc() {
-  if (document.getElementById("cmcCheckbox").checked == true) {
-    localStorage.setItem("bgColour", document.getElementById("colourBg").value);
-    localStorage.setItem("txColour", document.getElementById("colourTx").value);
-    setColours(localStorage.getItem("bgColour"), localStorage.getItem("txColour"));
-    localStorage.setItem("cmcChecked", "true");
-  } else {
-    localStorage.removeItem("bgColour");
-    localStorage.removeItem("txColour");
-    setColours("black", "white");
-    localStorage.removeItem("cmcChecked");
-  }
-}
-function setColours(bgColour, txColour) {
+function setColours(bgColour, txColour, wipe) {
   document.body.style.backgroundColor = bgColour;
   setTxColour1(document.querySelectorAll("h1,h2,p,a,td"));
   setTxColour2(document.querySelectorAll("table,tr,td"));
-
   function setTxColour1(array) {
     for (var i = 0; i < array.length; i++) {
       array[i].style.color = txColour;
@@ -401,66 +305,11 @@ function setColours(bgColour, txColour) {
       array[i].style.borderColor = txColour;
     }
   }
-  /*for (var i = 0; i < document.getElementsByTagName("td").length; i++) {
-    document.getElementsByTagName("td")[i].style.borderColor = txColour;
-  }*/
-}
-
-function wipeTmt() {
-  var confirmWipe = confirm("Are you sure you want to wipe your timetable?");
-  if (confirmWipe) {
-    var arrayP1 = document.getElementsByClassName("period1codes");
-    for (var i = 0; i < arrayP1.length; i++) {
-      arrayP1[i].value = ""
-    }
-    var arrayP2 = document.getElementsByClassName("period2codes");
-    for (var i = 0; i < arrayP2.length; i++) {
-      arrayP2[i].value = ""
-    }
-    var arrayP3 = document.getElementsByClassName("period3codes");
-    for (var i = 0; i < arrayP3.length; i++) {
-      arrayP3[i].value = ""
-    }
-    var arrayP4 = document.getElementsByClassName("period4codes");
-    for (var i = 0; i < arrayP4.length; i++) {
-      arrayP4[i].value = ""
-    }
-    var arrayS1 = document.getElementsByClassName("subject1details");
-    for (var i = 0; i < arrayS1.length; i++) {
-      arrayS1[i].value = ""
-    }
-    var arrayS2 = document.getElementsByClassName("subject2details");
-    for (var i = 0; i < arrayS2.length; i++) {
-      arrayS2[i].value = ""
-    }
-    var arrayS3 = document.getElementsByClassName("subject3details");
-    for (var i = 0; i < arrayS3.length; i++) {
-      arrayS3[i].value = ""
-    }
-    var arrayS4 = document.getElementsByClassName("subject4details");
-    for (var i = 0; i < arrayS4.length; i++) {
-      arrayS4[i].value = ""
-    }
-    var arrayS5 = document.getElementsByClassName("subject5details");
-    for (var i = 0; i < arrayS5.length; i++) {
-      arrayS5[i].value = ""
-    }
-    var arrayS6 = document.getElementsByClassName("subject6details");
-    for (var i = 0; i < arrayS6.length; i++) {
-      arrayS6[i].value = ""
-    }
+  if (wipe === "FALSE") {
+    localStorage.setItem("COLOUR-BG", bgColour);
+    localStorage.setItem("COLOUR-TX", txColour);
+  } else if (wipe === "TRUE") {
+    localStorage.removeItem("COLOUR-BG");
+    localStorage.removeItem("COLOUR-TX");
   }
 }
-
-/*function disableCnl() {
-  if (document.getElementById("cnlCheckbox").checked == true) {
-    localStorage.setItem("disableCnl", "true");
-  } else {
-    localStorage.removeItem("disableCnl")
-  }
-}
-if (localStorage["disableCnl"]) {
-  document.getElementById("cnlCheckbox").checked = true;
-} else {
-  document.getElementById("currentLesson").style.backgroundColor = "grey"
-}*/
