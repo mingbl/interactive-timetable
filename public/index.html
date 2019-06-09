@@ -17,7 +17,7 @@
           <td><b>Thursday</b></td>
           <td><b>Friday</b></td>
         </tr>
-        <tr id="periodOne">
+        <tr id="Period1">
           <td id="sidebar"><b>P1</b></td>
           <td><a><div>8:00-9:10</div></a></td>
           <td><a><div>8:00-9:10</div></a></td>
@@ -25,7 +25,7 @@
           <td><a><div>8:00-9:10</div></a></td>
           <td><a><div>8:00-9:10</div></a></td>
         </tr>
-        <tr id="periodTwo">
+        <tr id="Period2">
           <td id="sidebar"><b>P2</b></td>
           <td><a><div>9:10-10:30</div></a></td>
           <td><a><div>9:10-10:30</div></a></td>
@@ -41,7 +41,7 @@
           <td>10:30-10:55<br></td>
           <td>10:30-10:55<br></td>
         </tr>
-        <tr id="periodThree">
+        <tr id="Period3">
           <td id="sidebar"><b>P3</b></td>
           <td><a><div>10:55-12:05</div></a></td>
           <td><a><div>10:55-12:05</div></a></td>
@@ -57,7 +57,7 @@
           <td>12:05-12:50<br></td>
           <td>12:05-12:50<br></td>
         </tr>
-        <tr id="periodFour">
+        <tr id="Period4">
           <td id="sidebar"><b>P4</b></td>
           <td><a><div>12:50-2:00</div></a></td>
           <td><a><div>12:50-2:00</div></a></td>
@@ -67,47 +67,34 @@
         </tr>
       </table>
       <p id="weekend">NO SCHOOL TODAY! WOOO!!!</p>
-      <br><button type="button" name="button" onclick="editTable()">Edit Timetable</button>
-      <button type="button" name="button" onclick="exportTable('false')" title="Export as string">Export 1</button>
-      <button type="button" name="button" onclick="exportTable('true')" title="Export to URL">Export 2</button>
+      <br><button type="button" name="button" onclick="edit()">Edit Timetable</button>
+      <button type="button" onclick="exportExt('URL')" title="Export to URL">Export URL</button>
+      <button type="button" onclick="exportExt('TXT')" title="Export to text">Export TXT</button>
     </div>
     <div id="creator">
       <h1>Clickable Timetable Creator</h1>
-      <p>Version: 22c - Created by ML</p>
+      <p>Version: 23a - Created by ML</p>
       <section>
         <h2>Lesson Schedule</h2>
-        <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell.</p>
-        <div id="periods">
-          <input type="text" class="period1codes cell"><input type="text" class="period1codes cell"><input type="text" class="period1codes cell"><input type="text" class="period1codes cell"><input type="text" class="period1codes cell"><br>
-          <input type="text" class="period2codes cell"><input type="text" class="period2codes cell"><input type="text" class="period2codes cell"><input type="text" class="period2codes cell"><input type="text" class="period2codes cell"><br>
-          <input type="text" class="period3codes cell"><input type="text" class="period3codes cell"><input type="text" class="period3codes cell"><input type="text" class="period3codes cell"><input type="text" class="period3codes cell"><br>
-          <input type="text" class="period4codes cell"><input type="text" class="period4codes cell"><input type="text" class="period4codes cell"><input type="text" class="period4codes cell"><input type="text" class="period4codes cell"><br>
-        </div>
+        <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell. Use all caps and leave free periods blank.</p>
+        <div id="periods"><!-- Period sessions inputs go here --></div>
       </section>
       <section>
-        <h2>Collaborate Links</h2>
+        <h2>Subject Details</h2>
         <p>For each of your subjects, type the subject code (ENG, MAG, etc.) in the first cell, the name of the subject (English, Maths, etc.) in the second cell, and the lesson link in the third cell.<br>Optionally, type your teacher's name in the fourth cell and include their title (Mr/Mrs/Ms/Miss) so you'll know which one to use in case you need to email them.<br>(CELL 1: Subject code | CELL 2: Subject name | CELL 3: Lesson link | CELL 4 (Optional): Teacher's name)</p>
         <p>To get the lesson link of your class, log into Blackboard and go to where you'd normally click on your teacher's or class' name before being sent to the "Room Details" page.<br>Right click on the hyperlink and copy the url. The link should start with <u>https://elearn.eq.edu.au/webapps/bb-collaborate-bb_bb60/</u></p>
-        <div id="classes">
-          <input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><input type="text" class="subject1details cell"><br>
-          <input type="text" class="subject2details cell"><input type="text" class="subject2details cell"><input type="text" class="subject2details cell"><input type="text" class="subject2details cell"><br>
-          <input type="text" class="subject3details cell"><input type="text" class="subject3details cell"><input type="text" class="subject3details cell"><input type="text" class="subject3details cell"><br>
-          <input type="text" class="subject4details cell"><input type="text" class="subject4details cell"><input type="text" class="subject4details cell"><input type="text" class="subject4details cell"><br>
-          <input type="text" class="subject5details cell"><input type="text" class="subject5details cell"><input type="text" class="subject5details cell"><input type="text" class="subject5details cell"><br>
-          <input type="text" class="subject6details cell"><input type="text" class="subject6details cell"><input type="text" class="subject6details cell"><input type="text" class="subject6details cell"><br>
-        </div>
+        <div id="subjects"><!-- Subject details inputs go here --></div>
       </section>
-      <br><button type="button" name="button" onclick="saveEntire()">Save</button>
-      <button type="button" name="button" onclick="importTable()" title="Import from string">Import 1</button>
-      <button type="button" name="button" onclick="importFromUrl()" title="Import from URL">Import 2</button>
-      <!--<button type="button" name="button" onclick="showTnames()">Show teacher's names</button>
-      <button type="button" name="button" onclick="hideTnames()">Hide teacher's names</button>-->
-      <!--<input type="checkbox" id="cnlCheckbox" title="Disable current lesson hightlight" onclick="disableCnl()">-->
-      <input type="checkbox" id="tnamesCheckbox" title="Show teacher names" onclick="checkTnames()">
-      <input type="color" id="colourBg" title="Background colour" value="#000000" onclick="disableCmc()" style="padding:0px;">
-      <input type="color" id="colourTx" title="Table/text colour" value="#FFFFFF" onclick="disableCmc()" style="padding:0px;">
-      <input type="checkbox" id="cmcCheckbox" title="Use custom colours" onclick="checkCmc()">
-      <button type="button" name="button" title="Wipe timetable" onclick="wipeTmt()">Wipe</button>
+      <br>
+      <button type="button" onclick="save()" title="Save timetable">Save</button>
+      <button type="button" onclick="importExt('URL')" title="Import from URL">Import URL</button>
+      <button type="button" onclick="importExt('TXT')" title="Import from text">Import TXT</button>
+      <button type="button" onclick="wipe()" title="Wipe timetable">Wipe</button>
+
+      <input type="checkbox" id="tnames" title="Show teacher names" onclick="check('TNAMES')">
+      <input type="color" id="colourBg" title="Background colour" onclick="check('COLOURS', 'DISABLE')" value="#000000" style="padding:0px;">
+      <input type="color" id="colourTx" title="Table/text colour" onclick="check('COLOURS', 'DISABLE')" value="#FFFFFF" style="padding:0px;">
+      <input type="checkbox" id="colours" title="Use custom colours" onclick="check('COLOURS')">
     </div>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
