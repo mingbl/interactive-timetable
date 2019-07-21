@@ -1,35 +1,3 @@
-// Support for older versions
-{
-  if (localStorage["timetableExists"]) {
-    localStorage.setItem("TIMETABLE", "true");
-    localStorage.removeItem("timetableExists")
-  };
-  if (localStorage["period1codesSaved"]) {
-    localStorage.setItem("PERIODS", localStorage.getItem("period1codesSaved") + "," + localStorage.getItem("period2codesSaved") + "," + localStorage.getItem("period3codesSaved") + "," + localStorage.getItem("period4codesSaved"));
-    localStorage.setItem("SUBJECT1", localStorage.getItem("subject1detailsSaved"));
-    localStorage.setItem("SUBJECT2", localStorage.getItem("subject2detailsSaved"));
-    localStorage.setItem("SUBJECT3", localStorage.getItem("subject3detailsSaved"));
-    localStorage.setItem("SUBJECT4", localStorage.getItem("subject4detailsSaved"));
-    localStorage.setItem("SUBJECT5", localStorage.getItem("subject5detailsSaved"));
-    localStorage.setItem("SUBJECT6", localStorage.getItem("subject6detailsSaved"));
-    let subjects = ["subject1detailsSaved", "subject2detailsSaved", "subject3detailsSaved", "subject4detailsSaved", "subject5detailsSaved", "subject6detailsSaved"];
-    for (subject in subjects) {
-      localStorage.removeItem(subject)
-    }
-  };
-  if (localStorage["tnamesVisible"]) {
-    localStorage.setItem("USE-TNAMES", "true");
-    localStorage.removeItem("tnamesVisible")
-  };
-  if (localStorage["bgColour"]) {
-    localStorage.setItem("COLOUR-BG", localStorage.getItem("bgColour"));
-    localStorage.setItem("COLOUR-TX", localStorage.getItem("txColour"));
-    localStorage.setItem("USE-COLOURS", "true");
-    localStorage.removeItem("bgColour");
-    localStorage.removeItem("txColour");
-  };
-};
-
 // Initialise variables
 var numPeriods = 4;
 var numDays = 5;
@@ -37,7 +5,6 @@ var numSubjects = 6;
 var numDetails = 4;
 
 if (!localStorage["TIMETABLE"]) {
-
   // Hide timetable
   document.getElementById("timetable").style.display = "none";
 
@@ -62,12 +29,11 @@ if (!localStorage["TIMETABLE"]) {
       input.className = "input-subject-" + subject;
       inputSubjectsContainer.appendChild(input);
     };
-    inputSubjectsContainer.appendChild(document.createElement("br"));
+    inputSubjectsContainer.appendChild(document.createElement("br"))
   };
 
   // Save data to local storage
   function save() {
-
     // Ensure subject codes are present in the lesson schedule
     let periods = [""];
     for (var subject = 1; subject < numSubjects + 1; subject++) {
@@ -82,7 +48,7 @@ if (!localStorage["TIMETABLE"]) {
       }
     };
 
-    localStorage.setItem("PERIODS", compile(document.getElementsByClassName("input-periods")));
+    localStorage.setItem("PERIODS", compile(inputPeriods));
 
     for (var subject = 1; subject < numSubjects + 1; subject++) {
       localStorage.setItem("SUBJECT" + subject, compile(document.getElementsByClassName("input-subject-" + subject)));
@@ -109,12 +75,13 @@ if (!localStorage["TIMETABLE"]) {
 
   // Function for importing data from local storage
   function importData() {
-    let periods = localStorage.getItem("PERIODS").split(",")
+    let periods = localStorage.getItem("PERIODS").split(",");
+    let inputPeriods = document.getElementsByClassName("input-periods");
     for (var period = 0; period < numPeriods * numDays; period++) {
       if (periods[period] != "-") {
-        document.getElementsByClassName("input-periods")[period].value = periods[period]
+        inputPeriods[period].value = periods[period]
       } else {
-        document.getElementsByClassName("input-periods")[period].value = ""
+        inputPeriods[period].value = ""
       }
     };
 
@@ -139,7 +106,6 @@ if (!localStorage["TIMETABLE"]) {
 
   // Import data from external source and save to local storage
   function importExt(source) {
-
     if (source === "URL") {
       var dataImport = window.location.href.toString().split("#");
       if (dataImport[1]) {
@@ -188,14 +154,6 @@ if (!localStorage["TIMETABLE"]) {
       }
     };
   };
-
-  function wipe() {
-    if (confirm("Are you sure you want to wipe your timetable?")) {
-      localStorage.clear();
-      location.reload()
-    }
-  }
-
 } else {
 
   // Hide creator
@@ -311,5 +269,12 @@ function setColours(bgColour, txColour, wipe) {
   } else if (wipe === "TRUE") {
     localStorage.removeItem("COLOUR-BG");
     localStorage.removeItem("COLOUR-TX");
+  }
+};
+
+function wipe() {
+  if (confirm("Are you sure you want to wipe your timetable?")) {
+    localStorage.clear();
+    location.reload()
   }
 }
