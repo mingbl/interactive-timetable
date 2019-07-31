@@ -1,67 +1,25 @@
-![Build Status](https://gitlab.com/pages/plain-html/badges/master/build.svg)
+# Clickable Timetable
+### Setting up
+###### Lesson Schedule
+Refer to your official timetable pdf and copy each subject code from the pdf into its corresponding cell on the 5x4 creator table. 
+Be sure to keep the subject codes consistent (i.e. For English, use ENG in all instances).
+Leave free periods blank.
+###### Subject Details
+For each of your subjects: 
+1. type the subject code (e.g. ENG, MAG, DIS) in the first column (in separate rows),
+2. type the subject name (e.g. English, Maths, Digital Solutions) in the second column,
+3. copy and paste the lession link (see below) in the third column,
+4. type the teacher's name into the fourth column (Optional).
 
----
+To get the lession link of a class, login to eLearn/Blackboard, enter your course, find the lesson links and right click your class' title to get the lesson link. It may start with *https://elearn.eq.edu.au/webapps/bb-collaborate-bb*.
+###### Additional Settings
+Click on the first checkbox to show teacher names on your timetable.
+Use the two colour inputs to customise the colours of the text/table and background, then click on the second checkbox to enable them.
+###### Complete
+Click the 'Save' button to complete your timetable. Click 'Export URL' to post your data to the URL so you can bookmark it and import it if it disappears.
+### Backing up / Importing
+There are two options for backing up your data.
+1. Exporting to the URL. This is the easiest option as it allows you to simply bookmark the page with the data saved in the URL.
+2. Exporting to text. This turns your data into a line of text that you can save in a txt file to come back to if your data disappears.
 
-Example plain HTML site using GitLab Pages.
-
-Learn more about GitLab Pages at https://pages.gitlab.io and the official
-documentation https://docs.gitlab.com/ce/user/project/pages/.
-
----
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [GitLab CI](#gitlab-ci)
-- [GitLab User or Group Pages](#gitlab-user-or-group-pages)
-- [Did you fork this project?](#did-you-fork-this-project)
-- [Troubleshooting](#troubleshooting)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## GitLab CI
-
-This project's static Pages are built by [GitLab CI][ci], following the steps
-defined in [`.gitlab-ci.yml`](.gitlab-ci.yml):
-
-```
-image: alpine:latest
-
-pages:
-  stage: deploy
-  script:
-  - echo 'Nothing to do...'
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
-```
-
-The above example expects to put all your HTML files in the `public/` directory.
-
-## GitLab User or Group Pages
-
-To use this project as your user/group website, you will need one additional
-step: just rename your project to `namespace.gitlab.io`, where `namespace` is
-your `username` or `groupname`. This can be done by navigating to your
-project's **Settings**.
-
-Read more about [user/group Pages][userpages] and [project Pages][projpages].
-
-## Did you fork this project?
-
-If you forked this project for your own use, please go to your project's
-**Settings** and remove the forking relationship, which won't be necessary
-unless you want to contribute back to the upstream project.
-
-## Troubleshooting
-
-1. CSS is missing! That means that you have wrongly set up the CSS URL in your
-   HTML files. Have a look at the [index.html] for an example.
-
-[ci]: https://about.gitlab.com/gitlab-ci/
-[index.html]: https://gitlab.com/pages/plain-html/blob/master/public/index.html
-[userpages]: https://docs.gitlab.com/ce/user/project/pages/introduction.html#user-or-group-pages
-[projpages]: https://docs.gitlab.com/ce/user/project/pages/introduction.html#project-pages
+To import your data, click on the 'Edit Timetable' button and click either 'Import URL' or 'Import TXT' depending on your choice of backing up.
