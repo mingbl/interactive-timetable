@@ -1,11 +1,11 @@
 # Clickable Timetable
 ### Setting up
 ###### Lesson Schedule
-Refer to your official timetable pdf and copy each subject code from the pdf into its corresponding cell on the 5x4 creator table. 
+Refer to your official timetable pdf and copy each subject code from the pdf into its corresponding cell on the 5x4 creator table.
 Be sure to keep the subject codes consistent (i.e. For English, use ENG in all instances).
 Leave free periods blank.
 ###### Subject Details
-For each of your subjects: 
+For each of your subjects:
 1. type the subject code (e.g. ENG, MAG, DIS) in the first column (in separate rows),
 2. type the subject name (e.g. English, Maths, Digital Solutions) in the second column,
 3. copy and paste the lession link (see below) in the third column,
@@ -13,8 +13,9 @@ For each of your subjects:
 
 To get the lession link of a class, login to eLearn/Blackboard, enter your course, find the lesson links and right click your class' title to get the lesson link. It may start with *https://elearn.eq.edu.au/webapps/bb-collaborate-bb*.
 ###### Additional Settings
-Click on the first checkbox to show teacher names on your timetable.
-Use the two colour inputs to customise the colours of the text/table and background, then click on the second checkbox to enable them.
+* Click on the first checkbox to show teacher names on your timetable.
+* Click on the second checkbox to show subject codes on your timetable.
+* Use the two colour inputs to customise the colours of the text/table and background, then click on the second checkbox to enable them.
 ###### Complete
 Click the 'Save' button to complete your timetable. Click 'Export URL' to post your data to the URL so you can bookmark it and import it if it disappears.
 ### Backing up / Importing
