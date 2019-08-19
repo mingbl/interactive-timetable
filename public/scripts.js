@@ -1,8 +1,7 @@
 // Initialise variables
-var numPeriods = 4;
-var numDays = 5;
-var numSubjects = 6;
-var numDetails = 4;
+var numPeriods = 4, numDays = 5, numSubjects = 6, numDetails = 4,
+version = "34a";
+document.getElementById("version").innerHTML = "Version: " + version + " - Created by ML";
 
 if (!localStorage["TIMETABLE"]) {
   // Hide timetable
@@ -132,7 +131,7 @@ if (!localStorage["TIMETABLE"]) {
 
     localStorage.setItem("PERIODS", dataImport[0]);
 
-    for (var i = 1; i < numSubjects; i++) {
+    for (var i = 1; i < numSubjects + 1; i++) {
       localStorage.setItem("SUBJECT" + i, dataImport[i])
     };
 
