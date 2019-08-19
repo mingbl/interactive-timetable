@@ -8,7 +8,7 @@
   <body><center>
     <div id="timetable">
       <h1>Timetable</h1>
-      <table>
+      <table id="table">
         <tr>
           <td id="sidebar"></td>
           <td><b>Monday</b></td>
@@ -75,7 +75,7 @@
     </div>
     <div id="creator">
       <h1>Clickable Timetable Creator</h1>
-      <p id="version">Version</p>
+      <p id="version">Version</p> | | <a id="instructions" href="https://gitlab.com/brushyourteeth/clickable-timetable/blob/master/README.md">Full Instructions</a>
       <section>
         <h2>Lesson Schedule</h2>
         <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell. Use all caps and leave free periods blank.</p>
@@ -94,6 +94,7 @@
       <button type="button" onclick="wipe()" title="Wipe timetable">Wipe</button>
 
       <input type="checkbox" id="tnames" title="Show teacher names" onclick="check('TNAMES')">
+      <input type="checkbox" id="scodes" title="Show subject codes" onclick="check('SCODES')">
       <input type="color" id="colourBg" title="Background colour" onclick="check('COLOURS', 'DISABLE')" value="#000000" style="padding:0px;">
       <input type="color" id="colourTx" title="Table/text colour" onclick="check('COLOURS', 'DISABLE')" value="#FFFFFF" style="padding:0px;">
       <input type="checkbox" id="colours" title="Use custom colours" onclick="check('COLOURS')">

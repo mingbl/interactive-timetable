@@ -76,10 +76,14 @@ td a div {
   padding-bottom: 1vh;
   transition: .25s ease;
 }
-a {
+table#table tr td a {
   text-decoration: none
 }
 
 p#weekend {
   display: none
+}
+p#version, a#instructions {
+  display: inline-block;
+  margin: 0;
 }

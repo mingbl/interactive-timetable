@@ -1,6 +1,6 @@
 // Initialise variables
 var numPeriods = 4, numDays = 5, numSubjects = 6, numDetails = 4,
-version = "34a";
+version = "34b";
 document.getElementById("version").innerHTML = "Version: " + version + " - Created by ML";
 
 if (!localStorage["TIMETABLE"]) {
@@ -187,6 +187,9 @@ if (!localStorage["TIMETABLE"]) {
       if (localStorage["USE-TNAMES"]) {
         subject[a].children[0].children[0].innerHTML += "<br>" + details[3]
       };
+      if (localStorage["USE-SCODES"]) {
+        subject[a].children[0].children[0].innerHTML += "<br>" + details[0]
+      };
       subject[a].children[0].href = details[2];
       subject[a].classList.add("valid")
     }
@@ -240,7 +243,11 @@ if (localStorage["USE-TNAMES"]) {
   for (var i = 0; i < tableCells.length; i++) {
     tableCells[i].classList.add("extended")
   };
-}
+};
+
+if (localStorage["USE-SCODES"]) {
+  document.getElementById("scodes").checked = true;
+};
 
 if (localStorage["USE-COLOURS"]) {
   document.getElementById("colours").checked = true;
