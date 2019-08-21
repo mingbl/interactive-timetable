@@ -2,11 +2,87 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Timetable</title>
+    <title> Timetable </title>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body><center>
-    <div id="timetable">
+  <body> <center>
+    <div>
+      <h1> Clickable Timetable Creator </h1>
+      <h2> Subject Details </h2>
+      <table id="details-form">
+        <tr>
+          <th style="width:auto"> <button type="button" onclick="addSubject()" title="Add another subject"> + </button> </th>
+          <th> Code </th>
+          <th> Name </th>
+          <th> Link </th>
+          <th> Teacher </th>
+        </tr>
+        <tr id="subject-1">
+          <td style="font-weight:bold"> #1 </td>
+          <td> <input type="text" class="inputs-1" placeholder="PHY10D"> </td>
+          <td> <input type="text" class="inputs-1" placeholder="Physics"> </td>
+          <td> <input type="text" class="inputs-1" placeholder="https://brushyourteeth.gitlab.io/clickable-timetable/"> </td>
+          <td> <input type="text" class="inputs-1" placeholder="John Smith"> </td>
+        </tr>
+      </table>
+      <button type="button" onclick="saveDetails()"> Save Details </button>
+      <div>
+        <div id="schedule-controls">
+          <button type="button" onclick="setControl(1)">Subject 1</button>
+        </div>
+        <div>
+          <table id="schedule-prototype">
+            <tr>
+              <th style="width:auto"> </th>
+              <th style="font-weight:bold"> Monday </th>
+              <th style="font-weight:bold"> Tuesday </th>
+              <th style="font-weight:bold"> Wednesday </th>
+              <th style="font-weight:bold"> Thursday </th>
+              <th style="font-weight:bold"> Friday </th>
+            </tr>
+            <tr id="prototype-period-1">
+              <td style="font-weight:bold"> P1 </td>
+              <td onclick="setSession(this)" class="set-session" id="session-1"> </td>
+              <td onclick="setSession()" class="set-session" id="session-2"> </td>
+              <td onclick="setSession()" class="set-session" id="session-3"> </td>
+              <td onclick="setSession()" class="set-session" id="session-4"> </td>
+              <td onclick="setSession()" class="set-session" id="session-5"> </td>
+            </tr>
+            <tr id="prototype-period-2">
+              <td style="font-weight:bold"> P2 </td>
+              <td onclick="setSession()" class="set-session" id="session-6"> </td>
+              <td onclick="setSession()" class="set-session" id="session-7"> </td>
+              <td onclick="setSession()" class="set-session" id="session-8"> </td>
+              <td onclick="setSession()" class="set-session" id="session-9"> </td>
+              <td onclick="setSession()" class="set-session" id="session-10"> </td>
+            </tr>
+            <tr>
+              <td colspan="6" style="font-weight:bold"> Morning Tea </td>
+            </tr>
+            <tr id="prototype-period-3">
+              <td style="font-weight:bold"> P3 </td>
+              <td onclick="setSession()" class="set-session" id="session-11"> </td>
+              <td onclick="setSession()" class="set-session" id="session-12"> </td>
+              <td onclick="setSession()" class="set-session" id="session-13"> </td>
+              <td onclick="setSession()" class="set-session" id="session-14"> </td>
+              <td onclick="setSession()" class="set-session" id="session-15"> </td>
+            </tr>
+            <tr>
+              <td colspan="6" style="font-weight:bold"> Lunch </td>
+            </tr>
+            <tr id="prototype-period-4">
+              <td style="font-weight:bold"> P4 </td>
+              <td onclick="setSession()" class="set-session" id="session-16"> </td>
+              <td onclick="setSession()" class="set-session" id="session-17"> </td>
+              <td onclick="setSession()" class="set-session" id="session-18"> </td>
+              <td onclick="setSession()" class="set-session" id="session-19"> </td>
+              <td onclick="setSession()" class="set-session" id="session-20"> </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--<div id="timetable">
       <h1>Timetable</h1>
       <table id="table">
         <tr>
@@ -79,13 +155,13 @@
       <section>
         <h2>Lesson Schedule</h2>
         <p>Refer to your timetable and type each subject code (ENG, MAG, etc.) into the corresponding cell. Use all caps and leave free periods blank.</p>
-        <div id="periods"><!-- Period sessions inputs go here --></div>
+        <div id="periods"></div>
       </section>
       <section>
         <h2>Subject Details</h2>
         <p>For each of your subjects, type the subject code (ENG, MAG, etc.) in the first cell, the name of the subject (English, Maths, etc.) in the second cell, and the lesson link in the third cell.<br>Optionally, type your teacher's name in the fourth cell and include their title (Mr/Mrs/Ms/Miss) so you'll know which one to use in case you need to email them.<br>(CELL 1: Subject code | CELL 2: Subject name | CELL 3: Lesson link | CELL 4 (Optional): Teacher's name)</p>
         <p>To get the lesson link of your class, log into Blackboard and go to where you'd normally click on your teacher's or class' name before being sent to the "Room Details" page.<br>Right click on the hyperlink and copy the url. The link should start with <u>https://elearn.eq.edu.au/webapps/bb-collaborate-bb_bb60/</u></p>
-        <div id="subjects"><!-- Subject details inputs go here --></div>
+        <div id="subjects"></div>
       </section>
       <br>
       <button type="button" onclick="save()" title="Save timetable">Save</button>
@@ -98,7 +174,7 @@
       <input type="color" id="colourBg" title="Background colour" onclick="check('COLOURS', 'DISABLE')" value="#000000" style="padding:0px;">
       <input type="color" id="colourTx" title="Table/text colour" onclick="check('COLOURS', 'DISABLE')" value="#FFFFFF" style="padding:0px;">
       <input type="checkbox" id="colours" title="Use custom colours" onclick="check('COLOURS')">
-    </div>
+    </div>-->
   </center>
   <script src="scripts.js" charset="utf-8"></script>
   </body>

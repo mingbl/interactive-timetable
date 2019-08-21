@@ -1,89 +1,29 @@
 body {
-  background-color: black
+  background-color: black;
 }
-h1, h2, p, a, td {
-  color: white
+h1 {
 }
-table, tr, td {
-  border-color: white
-}
-td.valid {
-  transition: .25s ease
-}
-td.valid:hover, td.valid#active:hover {
-  background-color: lightgrey;
-}
-td#active {
-  background-color: grey;
-}
-input {
-  color: black
-}
-input:hover {
-  background-color: lightgrey;
-}
-table, tr, td {
-  border: 1px solid;
-}
-
-h1, h2, p, a, td {
+h1, h2, p, th, td {
+  color: white;
   font-family: helvetica;
-}
-input {
-  border-collapse: collapse;
   text-align: center;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  transition: .25s ease;
 }
-div#periods > input {
-  width: 15vw;
-  max-width: 120px;
+table, tr, td, th {
+  border: 1px solid white;
+  border-collapse: collapse;
 }
-div#subjects > input {
+th {
   width: 20vw;
   max-width: 150px;
 }
-textarea#codeOutput {
-  text-align: center;
-  width: 50vw;
-  max-width: 50vw;
-  height: 10vh
-}
-button {
-  color: black
-}
-table, tr, td {
-  border-collapse: collapse;
-  text-align: center;
-}
-td {
-  width: 20vw;
-  max-width: 150px;
-}
-td.extended {
-  max-width: 200px
-}
-td#sidebar {
-  width: 3vw;
-}
-tr.break td {
+table#schedule-prototype tr td {
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
-td a div {
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  transition: .25s ease;
+td.set-session {
+  font-weight: bold;
 }
-table#table tr td a {
-  text-decoration: none
-}
-
-p#weekend {
-  display: none
-}
-p#version, a#instructions {
-  display: inline-block;
-  margin: 0;
+td.set-session:hover {
+  background-color: grey;
+  cursor: pointer;
 }
