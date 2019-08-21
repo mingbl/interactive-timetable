@@ -3,7 +3,7 @@ body {
 }
 h1 {
 }
-h1, h2, p, th, td {
+h1, h2, p, th, td, a.session-link {
   color: white;
   font-family: helvetica;
   text-align: center;
@@ -16,7 +16,7 @@ th {
   width: 20vw;
   max-width: 150px;
 }
-table#schedule-prototype tr td {
+a.session-link div {
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
@@ -27,3 +27,15 @@ td.set-session:hover {
   background-color: grey;
   cursor: pointer;
 }
+a.session-link {
+  text-decoration: none;
+}
+td.valid {
+  transition: .25s ease;
+}
+td.valid:hover {
+  background-color: lightgrey;
+};
+td.valid:active {
+  background-color: grey;
+};
