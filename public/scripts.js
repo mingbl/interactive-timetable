@@ -122,8 +122,8 @@ function printData() {
         break;
     };
   };
-  return "Data printed";
   setColours();
+  return "Data printed";
 };
 
 function runEditor(subject) {
@@ -179,6 +179,7 @@ function saveDetails() {
   printData();
   console.log("Saved Details");
   localStorage.setItem("data", JSON.stringify(data));
+  document.getElementsByClassName("sticker")[0].checked = true;
   alert("Your timetable has been saved. Be sure to backup to the URL and bookmark it in case it disappears!")
 };
 
