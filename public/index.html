@@ -11,11 +11,11 @@
       <table>
         <tr>
           <th style="width:3vw;max-width:150px"> </th>
-          <th style="font-weight:bold"> Monday </th>
-          <th style="font-weight:bold"> Tuesday </th>
-          <th style="font-weight:bold"> Wednesday </th>
-          <th style="font-weight:bold"> Thursday </th>
-          <th style="font-weight:bold"> Friday </th>
+          <th style="font-weight:bold" class="table-heading"> Monday </th>
+          <th style="font-weight:bold" class="table-heading"> Tuesday </th>
+          <th style="font-weight:bold" class="table-heading"> Wednesday </th>
+          <th style="font-weight:bold" class="table-heading"> Thursday </th>
+          <th style="font-weight:bold" class="table-heading"> Friday </th>
         </tr>
         <tr id="period-1">
           <td style="font-weight:bold"> P1 </td>
@@ -34,7 +34,7 @@
           <td class="sessions"></td>
         </tr>
         <tr>
-          <td style="font-weight:bold"> MT </td>
+          <td style="font-weight:bold" class="break-heading"> MT </td>
           <td colspan="5"> 10:30-10:55 </td>
         </tr>
         <tr id="period-3">
@@ -46,7 +46,7 @@
           <td class="sessions"></td>
         </tr>
         <tr>
-          <td style="font-weight:bold"> L </td>
+          <td style="font-weight:bold" class="break-heading"> L </td>
           <td colspan="5"> 12:05-12:50 </td>
         </tr>
         <tr id="period-4">
@@ -68,6 +68,7 @@
           <th> Name </th>
           <th> Link </th>
           <th> Teacher </th>
+          <th style="width:1.5vw"> <input type="radio" name="sticker" class="sticker" value="0" onclick="runEditor(0)" checked title="Exit Editing"> </th>
         </tr>
         <div>
           <tr id="subject-1">
@@ -76,7 +77,7 @@
             <td> <input type="text" class="inputs-1" placeholder="Physics"> </td>
             <td> <input type="text" class="inputs-1" placeholder="https://brushyourteeth.gitlab.io/clickable-timetable/"> </td>
             <td> <input type="text" class="inputs-1" placeholder="John Smith"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(1)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(1)" title="Place Subject 1 on the timetable"> </td>
           </tr>
           <tr id="subject-2">
             <td style="font-weight:bold"> #2 </td>
@@ -84,7 +85,7 @@
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(2)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(2)" title="Place Subject 2 on the timetable"> </td>
           </tr>
           <tr id="subject-3">
             <td style="font-weight:bold"> #3 </td>
@@ -92,7 +93,7 @@
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(3)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(3)" title="Place Subject 3 on the timetable"> </td>
           </tr>
           <tr id="subject-4">
             <td style="font-weight:bold"> #4 </td>
@@ -100,7 +101,7 @@
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(4)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(4)" title="Place Subject 4 on the timetable"> </td>
           </tr>
           <tr id="subject-5">
             <td style="font-weight:bold"> #5 </td>
@@ -108,7 +109,7 @@
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(5)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(5)" title="Place Subject 5 on the timetable"> </td>
           </tr>
           <tr id="subject-6">
             <td style="font-weight:bold"> #6 </td>
@@ -116,15 +117,23 @@
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
-            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(6)"> / </button> </td>
+            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(6)" title="Place Subject 6 on the timetable"> </td>
           </tr>
         </div>
       </table>
-      <button type="button" onclick="saveDetails()"> Save / Exit Editing </button>
+      <button type="button" onclick="saveDetails()"> Save </button>
       <button type="button" onclick="backupURL()"> Backup </button>
       <button type="button" onclick="importURL()"> Import </button>
+      <br>
+      <input type="color" value="#FFFFFF" title="Background Colour" id="colour-1">
+      <input type="color" value="#000000" title="Table & Text Colour" id="colour-2">
+      <br>
+      <input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')">
+      <input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')">
+      <br>
+      <input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells">
     </div>
-    <p>Version 34c | Created by ML</p>
+    <p>Version 34d | Created by ML</p>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
   </body>

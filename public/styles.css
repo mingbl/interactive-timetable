@@ -1,25 +1,28 @@
-body {
-  background-color: black;
+body, input[type="text"] {
+  /*background-color: black;*/
 }
-h1 {
-}
-h1, h2, p, th, td, td.sessions a {
-  color: white;
+h1, h2, p, th, td, td.sessions a/*, input[type="text"]*/ {
+  /*color: white;*/
   font-family: helvetica;
   text-align: center;
 }
+a {
+  color: inherit;
+}
 table, tr, td, th {
-  border: 1px solid white;
+  border: 1px solid/* white*/;
   border-collapse: collapse;
 }
 th {
   width: 20vw;
+}
+th {
   max-width: 150px;
 }
 td.sessions a {
   text-decoration: none;
 }
-td.sessions a div, td.editing div {
+td.sessions a div, td.editing div, td.break-heading {
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
@@ -41,4 +44,7 @@ td.editing:hover {
 }
 td#current {
   background-color: grey;
+}
+input[type="text"] {
+  border: 0;
 }

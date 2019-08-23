@@ -1,4 +1,7 @@
 const sessions = document.getElementsByClassName("sessions"),
+resizer = document.getElementById("cell-resizer"),
+headings = document.getElementsByClassName("table-heading"),
+colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:30", 2: "10:55-12:05", 3: "12:50-2:00"};
 
 // Retrieve data
@@ -6,6 +9,8 @@ if (localStorage["data"]) { // Local Storage
   var data = JSON.parse(localStorage.getItem("data"));
   printData();
   fillInputs();
+  setSize();
+  setColours();
 } else if (localStorage["SUBJECT1"] && localStorage.getItem("SUBJECT1").length > 0) { // Old Version
   var data = new Object();
   let subject1 = localStorage.getItem("SUBJECT1").replace(/,-/g, ",,").split(","), subject2 = localStorage.getItem("SUBJECT2").replace(/,-/g, ",,").split(","), subject3 = localStorage.getItem("SUBJECT3").replace(/,-/g, ",,").split(","), subject4 = localStorage.getItem("SUBJECT4").replace(/,-/g, ",,").split(","), subject5 = localStorage.getItem("SUBJECT5").replace(/,-/g, ",,").split(","), subject6 = localStorage.getItem("SUBJECT6").replace(/,-/g, ",,").split(","), periods = localStorage.getItem("PERIODS").replace(/-/g, "").split(",");
@@ -60,12 +65,14 @@ if (localStorage["data"]) { // Local Storage
   if (localStorage["USE-SCODES"]) {data.options["displayCodes"] = true};
   if (localStorage["USE-TNAMES"]) {data.options["displayNames"] = true};
   if (localStorage["USE-COLOURS"]) {
-    data.options["customColours"] = [localStorage.getItem("COLOUR-BG"), localStorage.getItem("COLOUR-TX")];
+    data.options["customColour1"] = localStorage.getItem("COLOUR-BG");
+    data.options["customColour2"] = localStorage.getItem("COLOUR-TX");
   };
   localStorage.clear();
   localStorage.setItem("data", JSON.stringify(data));
   printData();
   fillInputs();
+  setSize();
 } else { // Create new
   var data = {
     subjects: new Object(),
@@ -78,12 +85,14 @@ console.log(data);
 function printData() {
   for (var c = 0; c < 20; c++) { // Print to timetable
     let cell = sessions[c];
+    //cell.title = "";
     cell.innerHTML = "";
     let a = document.createElement("a");
     if (!isNaN(data.periods[c]) && data.periods[c] > 0) {
       let subject = data.subjects[data.periods[c]];
       a.href = subject.link;
       cell.classList.add("valid");
+      cell.title = subject.name + " | " + subject.teacher;
       printCell(a, c, subject);
       cell.appendChild(a);
     } else {
@@ -114,18 +123,29 @@ function printData() {
     };
   };
   return "Data printed";
+  setColours();
 };
 
-function enableEditor(subject) {
+function runEditor(subject) {
+  if (subject == 0) {
+    for (var c = 0; c < 20; c++) {
+      let cell = sessions[c];
+      if (cell.classList.contains("editing")) {cell.classList.remove("editing")};
+      cell.onclick = undefined;
+    };
+    printData();
+    console.log("Exited editing mode.");
+    return;
+  };
   for (var c = 0; c < 20; c++) {
     let cell = sessions[c];
     let currentCell = c;
     if (cell.classList.contains("valid")) {cell.classList.remove("valid")};
+    //cell.title = "Place " + data.subjects[subject].name + " on this period";
     cell.innerHTML = "";
     cell.classList.add("editing");
     if (!isNaN(data.periods[currentCell]) && data.periods[currentCell] > 0) { // Print existing periods
       printCell(cell, currentCell, data.subjects[data.periods[currentCell]])
-
     };
     cell.onclick = function () {
       if (data.periods[currentCell] != subject) { // Update cell
@@ -171,6 +191,11 @@ function fillInputs() {
     inputs[2].value = subject.link;
     inputs[3].value = subject.teacher;
   };
+  if (data.options.hasOwnProperty("displayNames")) {document.getElementById("tnames").checked = true};
+  if (data.options.hasOwnProperty("displayCodes")) {document.getElementById("scodes").checked = true};
+  if (data.options.hasOwnProperty("cellSize")) {document.getElementById("cell-resizer").value = data.options.cellSize};
+  if (data.options.hasOwnProperty("customColour1")) {document.getElementById("colour-1").value = data.options.customColour1};
+  if (data.options.hasOwnProperty("customColour2")) {document.getElementById("colour-2").value = data.options.customColour2};
 };
 
 function printCell(parent, pos, subject) {
@@ -178,6 +203,8 @@ function printCell(parent, pos, subject) {
   var period = getPeriod(pos);
   let div = document.createElement("div");
   div.innerHTML = period + "<br><b>" + subject.name + "</b>";
+  if (data.options.hasOwnProperty("displayNames")) {div.innerHTML += "<br>" + subject.teacher};
+  if (data.options.hasOwnProperty("displayCodes")) {div.innerHTML += "<br>" + subject.code};
   parent.appendChild(div);
 };
 
@@ -208,4 +235,94 @@ function importURL() {
   localStorage.setItem("data", JSON.stringify(data));
   printData();
   alert("Your data has been imported.");
+};
+
+function check(option) {
+  let box = document.getElementById(option);
+  switch (option) {
+    case "tnames":
+      if (box.checked) {
+        data.options.displayNames = true;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked true");
+      } else {
+        delete data.options.displayNames;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked false");
+      };
+      break;
+    case "scodes":
+      if (box.checked) {
+        data.options.displayCodes = true;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked true");
+      } else {
+        delete data.options.displayCodes;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked false");
+      };
+      break;
+    default:
+
+  };
+  printData();
+};
+
+// Cell Resizer
+resizer.addEventListener("change", function () {
+  data.options.cellSize = resizer.value;
+  if (data.options.cellSize == 1) {
+    delete data.options.cellSize;
+  };
+  if (localStorage["data"]) {
+    localStorage.setItem("data", JSON.stringify(data));
+  };
+  setSize();
+});
+function setSize() {
+  if (data.options.hasOwnProperty("cellSize")) {
+    var size = data.options.cellSize;
+  } else {
+    var size = 1;
+  };
+  for (var h = 0; h < 5; h++) {
+    headings[h].style.maxWidth = (size * 150) + "px";
+  };
+};
+
+// Custom Colours
+colour1.addEventListener("change", function () {
+  data.options.customColour1 = colour1.value;
+  console.log("C1=" + colour1.value);
+  if (localStorage["data"]) {
+    localStorage.setItem("data", JSON.stringify(data));
+  };
+  setColours();
+});
+colour2.addEventListener("change", function () {
+  data.options.customColour2 = colour2.value;
+  console.log("C2=" + colour1.value);
+  if (localStorage["data"]) {
+    localStorage.setItem("data", JSON.stringify(data));
+  };
+  setColours();
+});
+function setColours() {
+  if (data.options.hasOwnProperty("customColour1")) {
+    document.body.style.backgroundColor = data.options.customColour1;
+    let inputs = document.querySelectorAll("input[type='text']");
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].style.backgroundColor = data.options.customColour1;
+    };
+  };
+  if (data.options.hasOwnProperty("customColour2")) {
+    let textElements = document.querySelectorAll("h1,h2,p,th,td,a,input[type='text'],div");
+    let borderElements = document.querySelectorAll("table,tr,td,th");
+    for (var i = 0; i < textElements.length; i++) {
+      textElements[i].style.color = data.options.customColour2;
+    };
+    for (var i = 0; i < borderElements.length; i++) {
+      borderElements[i].style.borderColor = data.options.customColour2;
+    };
+  };
 };
