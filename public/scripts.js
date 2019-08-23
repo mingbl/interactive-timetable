@@ -229,9 +229,10 @@ function backupURL() {
 };
 
 function importURL() {
-  let imported = window.location.href.toString().replace(/%22/g, '"').replace(/%20/g, " ").split("#");
-  if (!imported[1]) {alert("There's no timetable in your URL!"); return};
-  imported.shift();
+  let imported = window.location.href.toString().replace(/%22/g, '"').replace(/%20/g, " ");
+  let web = imported.split("#")[0].length;
+  if (!imported.split("#")[1]) {alert("There's no timetable in your URL!"); return};
+  imported = imported.substr(web + 1, imported.length);
   data = JSON.parse(imported.toString());
   localStorage.setItem("data", JSON.stringify(data));
   printData();
