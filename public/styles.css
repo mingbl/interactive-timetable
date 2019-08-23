@@ -16,13 +16,6 @@ th {
   width: 20vw;
   max-width: 150px;
 }
-td.set-session {
-  font-weight: bold;
-}
-td.set-session:hover {
-  background-color: grey;
-  cursor: pointer;
-}
 td.sessions a {
   text-decoration: none;
 }
