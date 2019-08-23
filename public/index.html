@@ -7,7 +7,7 @@
   </head>
   <body> <center>
     <h1> Timetable </h1>
-    <div>
+    <div id="timetable">
       <table>
         <tr>
           <th style="width:3vw;max-width:150px"> </th>
@@ -59,7 +59,7 @@
         </tr>
       </table>
     </div>
-    <div>
+    <div id="subject-details">
       <h2> Subject Details </h2>
       <table id="details-form">
         <tr>
@@ -76,7 +76,7 @@
             <td> <input type="text" class="inputs-1" placeholder="Physics"> </td>
             <td> <input type="text" class="inputs-1" placeholder="https://brushyourteeth.gitlab.io/clickable-timetable/"> </td>
             <td> <input type="text" class="inputs-1" placeholder="John Smith"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(1)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(1)"> / </button> </td>
           </tr>
           <tr id="subject-2">
             <td style="font-weight:bold"> #2 </td>
@@ -84,7 +84,7 @@
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(2)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(2)"> / </button> </td>
           </tr>
           <tr id="subject-3">
             <td style="font-weight:bold"> #3 </td>
@@ -92,7 +92,7 @@
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(3)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(3)"> / </button> </td>
           </tr>
           <tr id="subject-4">
             <td style="font-weight:bold"> #4 </td>
@@ -100,7 +100,7 @@
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(4)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(4)"> / </button> </td>
           </tr>
           <tr id="subject-5">
             <td style="font-weight:bold"> #5 </td>
@@ -108,7 +108,7 @@
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(5)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(5)"> / </button> </td>
           </tr>
           <tr id="subject-6">
             <td style="font-weight:bold"> #6 </td>
@@ -116,12 +116,15 @@
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
-            <td> <button type="button" title="Edit" onclick="enableEditor(6)"> / </button> </td>
+            <td> <button type="button" title="Place on Timetable" onclick="enableEditor(6)"> / </button> </td>
           </tr>
         </div>
       </table>
-      <button type="button" onclick="saveDetails()"> Save Details </button>
+      <button type="button" onclick="saveDetails()"> Save / Exit Editing </button>
+      <button type="button" onclick="backupURL()"> Backup </button>
+      <button type="button" onclick="importURL()"> Import </button>
     </div>
+    <p>Version 34c | Created by ML</p>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
   </body>

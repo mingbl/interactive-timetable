@@ -3,7 +3,7 @@ body {
 }
 h1 {
 }
-h1, h2, p, th, td, a.session-link {
+h1, h2, p, th, td, td.sessions a {
   color: white;
   font-family: helvetica;
   text-align: center;
@@ -16,10 +16,6 @@ th {
   width: 20vw;
   max-width: 150px;
 }
-a.session-link div {
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-}
 td.set-session {
   font-weight: bold;
 }
@@ -27,15 +23,29 @@ td.set-session:hover {
   background-color: grey;
   cursor: pointer;
 }
-a.session-link {
+td.sessions a {
   text-decoration: none;
+}
+td.sessions a div, td.editing div {
+  padding-top: 1vh;
+  padding-bottom: 1vh;
 }
 td.valid {
   transition: .25s ease;
 }
-td.valid:hover {
+td.valid:hover, td.valid#current:hover {
   background-color: lightgrey;
-};
-td.valid:active {
+}
+td.valid:active, td.valid#current:active {
   background-color: grey;
-};
+}
+td.editing {
+  transition: .25s ease;
+}
+td.editing:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+td#current {
+  background-color: grey;
+}
