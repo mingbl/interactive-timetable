@@ -104,22 +104,27 @@ function printData() {
   };
 
   // Highlight the current session
-  let day = new Date().getDay();
-  let hour = new Date().getHours();
+  let date = new Date();
+  let day = date.getDay();
+  let hour = date.getHours();
+  let minutes = date.getMinutes();
+  let time = hour + minutes / 60;
+  console.log(time);
   if (day != 0 && day != 6) {
-    switch (hour) {
-      case 7: case 8:
-        document.getElementById("period-1").children[day].id = "current";
-        break;
-      case 9:
-        document.getElementById("period-2").children[day].id = "current";
-        break;
-      case 10: case 11:
-        document.getElementById("period-3").children[day].id = "current";
-        break;
-      case 12: case 13:
+    if (time <= 14) {
+      if (time >= 12 + 40/60) {
         document.getElementById("period-4").children[day].id = "current";
-        break;
+      } else if (time >= 12 + 5/60) {
+        document.getElementById("lunch").id = "current";
+      } else if (time >= 10 + 45/60) {
+        document.getElementById("period-3").children[day].id = "current";
+      } else if (time >= 10 + 30/60) {
+        document.getElementById("morning-tea").id = "current";
+      } else if (time >= 9 + 0/60) {
+        document.getElementById("period-2").children[day].id = "current";
+      } else if (time >= 7 + 50/60) {
+        document.getElementById("period-1").children[day].id = "current";
+      };
     };
   };
   setColours();
@@ -141,7 +146,6 @@ function runEditor(subject) {
     let cell = sessions[c];
     let currentCell = c;
     if (cell.classList.contains("valid")) {cell.classList.remove("valid")};
-    //cell.title = "Place " + data.subjects[subject].name + " on this period";
     cell.innerHTML = "";
     cell.classList.add("editing");
     if (!isNaN(data.periods[currentCell]) && data.periods[currentCell] > 0) { // Print existing periods
@@ -204,8 +208,8 @@ function printCell(parent, pos, subject) {
   var period = getPeriod(pos);
   let div = document.createElement("div");
   div.innerHTML = period + "<br><b>" + subject.name + "</b>";
-  if (data.options.hasOwnProperty("displayNames")) {div.innerHTML += "<br>" + subject.teacher};
-  if (data.options.hasOwnProperty("displayCodes")) {div.innerHTML += "<br>" + subject.code};
+  if (data.options.hasOwnProperty("displayNames") && subject.teacher != "") {div.innerHTML += "<br>" + subject.teacher};
+  if (data.options.hasOwnProperty("displayCodes") && subject.code != "") {div.innerHTML += "<br>" + subject.code};
   parent.appendChild(div);
 };
 
@@ -295,7 +299,6 @@ function setSize() {
 // Custom Colours
 colour1.addEventListener("change", function () {
   data.options.customColour1 = colour1.value;
-  console.log("C1=" + colour1.value);
   if (localStorage["data"]) {
     localStorage.setItem("data", JSON.stringify(data));
   };
@@ -303,7 +306,6 @@ colour1.addEventListener("change", function () {
 });
 colour2.addEventListener("change", function () {
   data.options.customColour2 = colour2.value;
-  console.log("C2=" + colour1.value);
   if (localStorage["data"]) {
     localStorage.setItem("data", JSON.stringify(data));
   };
