@@ -133,12 +133,7 @@ function printData() {
 
 function runEditor(subject) {
   if (subject == 0) {
-    for (var c = 0; c < 20; c++) {
-      let cell = sessions[c];
-      if (cell.classList.contains("editing")) {cell.classList.remove("editing")};
-      cell.onclick = undefined;
-    };
-    printData();
+    saveDetails();
     console.log("Exited editing mode.");
     return;
   };
