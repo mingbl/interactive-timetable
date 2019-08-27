@@ -137,6 +137,11 @@ function runEditor(subject) {
     console.log("Exited editing mode.");
     return;
   };
+  if (!data.subjects.hasOwnProperty("1")) {
+    alert("Click Save first!");
+    document.getElementsByClassName("sticker")[0].checked = true;
+    return;
+  };
   for (var c = 0; c < 20; c++) {
     let cell = sessions[c];
     let currentCell = c;
