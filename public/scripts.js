@@ -2,7 +2,7 @@ const sessions = document.getElementsByClassName("sessions"),
 resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("table-heading"),
 colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"),
-periodTimes = {0: "8:00-9:10", 1: "9:10-10:30", 2: "10:55-12:05", 3: "12:50-2:00"};
+periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"};
 
 // Retrieve data
 if (localStorage["data"]) { // Local Storage
@@ -116,9 +116,9 @@ function printData() {
         document.getElementById("period-4").children[day].id = "current";
       } else if (time >= 12 + 5/60) {
         document.getElementById("lunch").id = "current";
-      } else if (time >= 10 + 45/60) {
+      } else if (time >= 10 + 40/60) {
         document.getElementById("period-3").children[day].id = "current";
-      } else if (time >= 10 + 30/60) {
+      } else if (time >= 10 + 20/60) {
         document.getElementById("morning-tea").id = "current";
       } else if (time >= 9 + 0/60) {
         document.getElementById("period-2").children[day].id = "current";
