@@ -173,8 +173,8 @@ function saveDetails() {
     data.subjects[i] = new Object();
     data.subjects[i].code = inputs[0].value;
     data.subjects[i].name = inputs[1].value;
-    data.subjects[i].link = inputs[2].value;
-    data.subjects[i].teacher = inputs[3].value;
+    data.subjects[i].link = inputs[3].value;
+    data.subjects[i].teacher = inputs[2].value;
   };
   for (var c = 0; c < 20; c++) {
     let cell = sessions[c];
@@ -194,8 +194,8 @@ function fillInputs() {
     var inputs = document.getElementsByClassName("inputs-" + s);
     inputs[0].value = subject.code;
     inputs[1].value = subject.name;
-    inputs[2].value = subject.link;
-    inputs[3].value = subject.teacher;
+    inputs[3].value = subject.link;
+    inputs[2].value = subject.teacher;
   };
   if (data.options.hasOwnProperty("displayNames")) {document.getElementById("tnames").checked = true};
   if (data.options.hasOwnProperty("displayCodes")) {document.getElementById("scodes").checked = true};
