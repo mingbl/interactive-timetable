@@ -2,7 +2,8 @@ const sessions = document.getElementsByClassName("sessions"),
 resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("table-heading"),
 colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"),
-periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"};
+periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"},
+dateDisplay = document.getElementById("date");
 
 // Retrieve data
 if (localStorage["data"]) { // Local Storage
@@ -330,3 +331,24 @@ function setColours() {
     };
   };
 };
+
+function displayDate() {
+  let date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let hour = date.getHours();
+  let minutes = ("0" + date.getMinutes()).slice(-2);
+  let seconds = ("0" + date.getSeconds()).slice(-2);
+
+  let cycle = "AM";
+
+  if (hour >= 12) {
+    hour -= 12;
+    cycle = "PM";
+  };
+
+  dateDisplay.innerHTML = hour + ":" + minutes + ":" + seconds + " " + cycle + " | " + day + "/" + month + "/" + year;
+};
+displayDate();
+setInterval(displayDate, 1000)

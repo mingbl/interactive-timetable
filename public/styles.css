@@ -44,3 +44,12 @@ td#current {
 input[type="text"] {
   border: 0;
 }
+h1 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+p#date {
+  margin-top: 0;
+  padding-top: 0;
+  font-weight: bold;
+}
