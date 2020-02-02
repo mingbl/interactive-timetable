@@ -1,7 +1,7 @@
 const sessions = document.getElementsByClassName("sessions"),
 resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("table-heading"),
-colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"),
+colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"), colour3 = document.getElementById("colour-3"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"},
 dateDisplay = document.getElementById("date");
 
@@ -12,68 +12,6 @@ if (localStorage["data"]) { // Local Storage
   fillInputs();
   setSize();
   setColours();
-} else if (localStorage["SUBJECT1"] && localStorage.getItem("SUBJECT1").length > 0) { // Old Version
-  var data = new Object();
-  let subject1 = localStorage.getItem("SUBJECT1").replace(/,-/g, ",,").split(","), subject2 = localStorage.getItem("SUBJECT2").replace(/,-/g, ",,").split(","), subject3 = localStorage.getItem("SUBJECT3").replace(/,-/g, ",,").split(","), subject4 = localStorage.getItem("SUBJECT4").replace(/,-/g, ",,").split(","), subject5 = localStorage.getItem("SUBJECT5").replace(/,-/g, ",,").split(","), subject6 = localStorage.getItem("SUBJECT6").replace(/,-/g, ",,").split(","), periods = localStorage.getItem("PERIODS").replace(/-/g, "").split(",");
-  data.subjects = {
-      1: {
-        code: subject1[0],
-        name: subject1[1],
-        link: subject1[2],
-        teacher: subject1[3],
-      },
-      2: {
-        code: subject2[0],
-        name: subject2[1],
-        link: subject2[2],
-        teacher: subject2[3],
-      },
-      3: {
-        code: subject3[0],
-        name: subject3[1],
-        link: subject3[2],
-        teacher: subject3[3],
-      },
-      4: {
-        code: subject4[0],
-        name: subject4[1],
-        link: subject4[2],
-        teacher: subject4[3],
-      },
-      5: {
-        code: subject5[0],
-        name: subject5[1],
-        link: subject5[2],
-        teacher: subject5[3],
-      },
-      6: {
-        code: subject6[0],
-        name: subject6[1],
-        link: subject6[2],
-        teacher: subject6[3],
-      },
-    };
-  data.options = new Object();
-  data.periods = [];
-  for (var c = 0; c < 20; c++) {
-    for (var s = 1; s <= 6; s++) {
-      if (periods[c] == data.subjects[s].code) {
-        data.periods[c] = s;
-        break;
-      };
-    };
-  };
-  if (localStorage["USE-SCODES"]) {data.options["displayCodes"] = true};
-  if (localStorage["USE-TNAMES"]) {data.options["displayNames"] = true};
-  if (localStorage["USE-COLOURS"]) {
-    data.options["customColour1"] = localStorage.getItem("COLOUR-BG");
-    data.options["customColour2"] = localStorage.getItem("COLOUR-TX");
-  };
-  localStorage.clear();
-  localStorage.setItem("data", JSON.stringify(data));
-  printData();
-  fillInputs();
-  setSize();
 } else { // Create new
   var data = {
     subjects: new Object(),
@@ -89,13 +27,16 @@ function printData() {
     //cell.title = "";
     cell.innerHTML = "";
     let a = document.createElement("a");
+    cell.style.removeProperty("background-color");
     if (!isNaN(data.periods[c]) && data.periods[c] > 0) {
       let subject = data.subjects[data.periods[c]];
       a.href = subject.link;
       cell.classList.add("valid");
-      cell.title = subject.name + " | " + subject.teacher;
+      cell.title = subject.name;
+      if (subject.teacher.length > 0) {cell.title += " | " + subject.teacher};
       printCell(a, c, subject);
       cell.appendChild(a);
+      if (data.options.hasOwnProperty("highlightClasses")) {cell.style.backgroundColor = subject.highlight};
     } else {
       var period = getPeriod(c);
       let div = document.createElement("div");
@@ -115,18 +56,25 @@ function printData() {
     if (time <= 14) {
       if (time >= 12 + 40/60) {
         document.getElementById("period-4").children[day].id = "current";
+        document.getElementById("period-4").children[0].classList.add("currentHeadings");
       } else if (time >= 12 + 5/60) {
-        document.getElementById("lunch").id = "current";
+        document.getElementsByClassName("breaks")[1].children[1].id = "current";
+        document.getElementsByClassName("breaks")[1].classList.add("currentHeadings");
       } else if (time >= 10 + 40/60) {
         document.getElementById("period-3").children[day].id = "current";
+        document.getElementById("period-3").children[0].classList.add("currentHeadings");
       } else if (time >= 10 + 20/60) {
-        document.getElementById("morning-tea").id = "current";
+        document.getElementsByClassName("breaks")[0].children[1].id = "current";
+        document.getElementsByClassName("breaks")[0].classList.add("currentHeadings");
       } else if (time >= 9 + 0/60) {
         document.getElementById("period-2").children[day].id = "current";
+        document.getElementById("period-2").children[0].classList.add("currentHeadings");
       } else if (time >= 7 + 50/60) {
         document.getElementById("period-1").children[day].id = "current";
+        document.getElementById("period-1").children[0].classList.add("currentHeadings");
       };
     };
+    document.getElementsByClassName("table-heading")[day-1].classList.add("currentHeadings");
   };
   setColours();
   return "Data printed";
@@ -157,10 +105,12 @@ function runEditor(subject) {
         data.periods[currentCell] = subject;
         printCell(cell, currentCell, data.subjects[subject]);
         console.log("Cell " + currentCell + " changed to " + subject);
+        if (data.options.hasOwnProperty("highlightClasses")) {cell.style.backgroundColor = data.subjects[subject].highlight};
       } else { // Empty cell
         data.periods[currentCell] = null;
         cell.innerHTML = "";
         console.log("Cell " + currentCell + " changed to null");
+        cell.style.removeProperty("background-color");
       };
     };
   };
@@ -175,6 +125,12 @@ function saveDetails() {
     data.subjects[i].name = inputs[1].value;
     data.subjects[i].link = inputs[3].value;
     data.subjects[i].teacher = inputs[2].value;
+    //data.subjects[i].highlight = inputs[4].value;
+    if (inputs[4].value != null) {
+      data.subjects[i].highlight = inputs[4].value;
+    } else {
+      data.subjects[i].highlight = "#808080";
+    }
   };
   for (var c = 0; c < 20; c++) {
     let cell = sessions[c];
@@ -196,12 +152,15 @@ function fillInputs() {
     inputs[1].value = subject.name;
     inputs[3].value = subject.link;
     inputs[2].value = subject.teacher;
+    inputs[4].value = subject.highlight;
   };
   if (data.options.hasOwnProperty("displayNames")) {document.getElementById("tnames").checked = true};
   if (data.options.hasOwnProperty("displayCodes")) {document.getElementById("scodes").checked = true};
+  if (data.options.hasOwnProperty("highlightClasses")) {document.getElementById("hilite").checked = true};
   if (data.options.hasOwnProperty("cellSize")) {document.getElementById("cell-resizer").value = data.options.cellSize};
   if (data.options.hasOwnProperty("customColour1")) {document.getElementById("colour-1").value = data.options.customColour1};
   if (data.options.hasOwnProperty("customColour2")) {document.getElementById("colour-2").value = data.options.customColour2};
+  if (data.options.hasOwnProperty("customColour3")) {document.getElementById("colour-3").value = data.options.customColour3};
 };
 
 function printCell(parent, pos, subject) {
@@ -246,6 +205,11 @@ function importURL() {
 
 function check(option) {
   let box = document.getElementById(option);
+  if (!data.subjects.hasOwnProperty("1")) {
+    alert("Click Save first!");
+    box.checked = false;
+    return;
+  };
   switch (option) {
     case "tnames":
       if (box.checked) {
@@ -265,6 +229,17 @@ function check(option) {
         console.log(option + " marked true");
       } else {
         delete data.options.displayCodes;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked false");
+      };
+      break;
+    case "hilite":
+      if (box.checked) {
+        data.options.highlightClasses = true;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked true");
+      } else {
+        delete data.options.highlightClasses;
         localStorage.setItem("data", JSON.stringify(data));
         console.log(option + " marked false");
       };
@@ -297,6 +272,9 @@ function setSize() {
   };
 };
 
+// Highlight Classes / Colour Coding
+
+
 // Custom Colours
 colour1.addEventListener("change", function () {
   data.options.customColour1 = colour1.value;
@@ -307,6 +285,13 @@ colour1.addEventListener("change", function () {
 });
 colour2.addEventListener("change", function () {
   data.options.customColour2 = colour2.value;
+  if (localStorage["data"]) {
+    localStorage.setItem("data", JSON.stringify(data));
+  };
+  setColours();
+});
+colour3.addEventListener("change", function () {
+  data.options.customColour3 = colour3.value;
   if (localStorage["data"]) {
     localStorage.setItem("data", JSON.stringify(data));
   };
@@ -330,22 +315,37 @@ function setColours() {
       borderElements[i].style.borderColor = data.options.customColour2;
     };
   };
+  if (data.options.hasOwnProperty("customColour2") && data.options.hasOwnProperty("highlightClasses")) {
+    let textElements = document.querySelectorAll("td.valid > a > div");
+    for (var i = 0; i < textElements.length; i++) {
+      textElements[i].style.color = data.options.customColour3;
+    };
+  };
 };
 
 function displayDate() {
+  function minTwoDigits(n) { // https://stackoverflow.com/a/8513064
+    return (n < 10 ? '0' : '') + n;
+  };
+
   let date = new Date();
   let day = date.getDate();
-  let month = date.getMonth() + 1;
+  let month = minTwoDigits(date.getMonth() + 1);
   let year = date.getFullYear();
   let hour = date.getHours();
-  let minutes = ("0" + date.getMinutes()).slice(-2);
-  let seconds = ("0" + date.getSeconds()).slice(-2);
+  let minutes = minTwoDigits(date.getMinutes());
+  let seconds = minTwoDigits(date.getSeconds());
 
   let cycle = "AM";
 
-  if (hour >= 12) {
-    hour -= 12;
+  if (hour > 11) {
     cycle = "PM";
+  };
+  if (hour > 12) {
+    hour -= 12;
+  };
+  if (hour == 0) {
+    hour = 12;
   };
 
   dateDisplay.innerHTML = hour + ":" + minutes + ":" + seconds + " " + cycle + " | " + day + "/" + month + "/" + year;

@@ -26,10 +26,10 @@ td.valid {
   transition: .25s ease;
 }
 td.valid:hover, td.valid#current:hover {
-  background-color: lightgrey;
+  background-color: lightgrey !important;
 }
 td.valid:active, td.valid#current:active {
-  background-color: grey;
+  background-color: grey !important;
 }
 td.editing {
   transition: .25s ease;
@@ -38,8 +38,9 @@ td.editing:hover {
   background-color: grey;
   cursor: pointer;
 }
-td#current {
+td#current, .currentHeadings {
   background-color: grey;
+  font-weight: bold;
 }
 input[type="text"] {
   border: 0;

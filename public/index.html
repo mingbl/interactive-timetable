@@ -34,9 +34,9 @@
           <td class="sessions"></td>
           <td class="sessions"></td>
         </tr>
-        <tr>
+        <tr class="breaks">
           <td style="font-weight:bold" class="break-heading"> MT </td>
-          <td colspan="5" id="morning-tea"> 10:20-10:45 </td>
+          <td colspan="5"> 10:20-10:45 </td>
         </tr>
         <tr id="period-3">
           <td style="font-weight:bold"> P3 </td>
@@ -46,9 +46,9 @@
           <td class="sessions"></td>
           <td class="sessions"></td>
         </tr>
-        <tr>
+        <tr class="breaks">
           <td style="font-weight:bold" class="break-heading"> L </td>
-          <td colspan="5" id="lunch"> 12:05-12:50 </td>
+          <td colspan="5"> 12:05-12:50 </td>
         </tr>
         <tr id="period-4">
           <td style="font-weight:bold"> P4 </td>
@@ -68,6 +68,7 @@
           <th> Name* </th>
           <th> Teacher </th>
           <th> Link* </th>
+          <th style="width:auto"> Colour </th>
           <th style="width:1.5vw"> <input type="radio" name="sticker" class="sticker" value="0" onclick="runEditor(0)" checked title="Exit Editing"> </th>
         </tr>
         <div>
@@ -76,6 +77,7 @@
             <td> <input type="text" class="inputs-1" placeholder="Physics"> </td>
             <td> <input type="text" class="inputs-1" placeholder="John Smith"> </td>
             <td> <input type="text" class="inputs-1" placeholder="https://brushyourteeth.gitlab.io/clickable-timetable/"> </td>
+            <td> <input type="color" class="inputs-1" value="#00FFFF" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(1)" title="Place Subject 1 on the timetable"> </td>
           </tr>
           <tr id="subject-2">
@@ -83,6 +85,7 @@
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
             <td> <input type="text" class="inputs-2"> </td>
+            <td> <input type="color" class="inputs-2" value="#7FFFD4" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(2)" title="Place Subject 2 on the timetable"> </td>
           </tr>
           <tr id="subject-3">
@@ -90,6 +93,7 @@
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
             <td> <input type="text" class="inputs-3"> </td>
+            <td> <input type="color" class="inputs-3" value="#EE82EE" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(3)" title="Place Subject 3 on the timetable"> </td>
           </tr>
           <tr id="subject-4">
@@ -97,6 +101,7 @@
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
             <td> <input type="text" class="inputs-4"> </td>
+            <td> <input type="color" class="inputs-4" value="#FFD700" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(4)" title="Place Subject 4 on the timetable"> </td>
           </tr>
           <tr id="subject-5">
@@ -104,6 +109,7 @@
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
             <td> <input type="text" class="inputs-5"> </td>
+            <td> <input type="color" class="inputs-5" value="#FF6347" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(5)" title="Place Subject 5 on the timetable"> </td>
           </tr>
           <tr id="subject-6">
@@ -111,6 +117,7 @@
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
             <td> <input type="text" class="inputs-6"> </td>
+            <td> <input type="color" class="inputs-6" value="#7B68EE" title="Highlight Colour"> </td>
             <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(6)" title="Place Subject 6 on the timetable"> </td>
           </tr>
         </div>
@@ -121,13 +128,15 @@
       <br>
       <input type="color" value="#FFFFFF" title="Background Colour" id="colour-1">
       <input type="color" value="#000000" title="Table & Text Colour" id="colour-2">
+      <input type="color" value="#000000" title="Highlighted Sessions Text Colour" id="colour-3">
       <br>
       <input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')">
       <input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')">
+      <input type="checkbox" id="hilite" title="Use Highlight Colours" onclick="check('hilite')">
       <br>
       <input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells">
     </div>
-    <p>Version II05d | Created by ML</p>
+    <p>Version II06a | Created by ML</p>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
   </body>
