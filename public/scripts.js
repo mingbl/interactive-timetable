@@ -3,11 +3,20 @@ resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("table-heading"),
 colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"), colour3 = document.getElementById("colour-3"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"},
+maxSubjects = 7,
 dateDisplay = document.getElementById("date");
 
 // Retrieve data
 if (localStorage["data"]) { // Local Storage
   var data = JSON.parse(localStorage.getItem("data"));
+  if (!data.subjects[7]) {
+    data.subjects[7] = new Object();
+    data.subjects[7].code = "";
+    data.subjects[7].name = "";
+    data.subjects[7].link = "";
+    data.subjects[7].teacher = "";
+    data.subjects[7].highlight = "#808080";
+  };
   printData();
   fillInputs();
   setSize();
@@ -118,7 +127,7 @@ function runEditor(subject) {
 };
 
 function saveDetails() {
-  for (var i = 1; i <= 6; i++) {
+  for (var i = 1; i <= maxSubjects; i++) {
     let inputs = document.getElementsByClassName("inputs-" + i);
     data.subjects[i] = new Object();
     data.subjects[i].code = inputs[0].value;
@@ -145,7 +154,7 @@ function saveDetails() {
 };
 
 function fillInputs() {
-  for (var s = 1; s <= 6; s++) {
+  for (var s = 1; s <= maxSubjects; s++) {
     let subject = data.subjects[s];
     var inputs = document.getElementsByClassName("inputs-" + s);
     inputs[0].value = subject.code;
