@@ -210,6 +210,7 @@ function importURL() {
   localStorage.setItem("data", JSON.stringify(data));
   printData();
   alert("Your data has been imported.");
+  window.location.reload();
 };
 
 function check(option) {
