@@ -134,19 +134,33 @@
       <button type="button" onclick="backupURL()"> Backup </button>
       <button type="button" onclick="importURL()"> Import </button>
       <br>
-      <input type="color" value="#FFFFFF" title="Background Colour" id="colour-1">
-      <input type="color" value="#000000" title="Table & Text Colour" id="colour-2">
-      <input type="color" value="#000000" title="Highlighted Sessions Text Colour" id="colour-3">
-      <br>
-      <input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')">
-      <input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')">
-      <input type="checkbox" id="hilite" title="Use Highlight Colours" onclick="check('hilite')">
-      <br>
-      <input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells">
+      <div id="tools">
+        <input type="color" value="#FFFFFF" title="Background Colour" id="colour-1">
+        <input type="color" value="#000000" title="Table & Text Colour" id="colour-2">
+        <input type="color" value="#000000" title="Highlighted Sessions Text Colour" id="colour-3">
+        <br>
+        <input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')">
+        <input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')">
+        <input type="checkbox" id="hilite" title="Use Highlight Colours" onclick="check('hilite')">
+        <input type="checkbox" id="dnotes" title="Enable Notes" onclick="check('dnotes')">
+        <br>
+        <input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells">
+      </div>
     </div>
-    <p>Version II11b | Created by ML</p>
+    <p>Version II13A | Created by ML</p>
     <a href="https://github.com/mingbl/timetable/blob/master/README.md"><p>Guide / Support</p></a>
+    <p id="changeII13A" onclick="hideMe()"><b>!!! NEW !!! ENABLE NOTES! (4th checkbox) ENTER EDITING MODE USING THE RADIO/CIRCLE BUTTONS! (Click me to hide)</b></p>
+    <button id="easter-egg">Easter egg</button>
   </center>
   <script src="scripts.js" charset="utf-8"></script>
+  <script>
+    if (localStorage["hideII13A"]) {
+      document.getElementById("changeII13A").style.display = "none";
+    };
+    function hideMe() {
+      document.getElementById("changeII13A").style.display = "none";
+      localStorage.setItem("hideII13A", "true");
+    };
+  </script>
   </body>
 </html>

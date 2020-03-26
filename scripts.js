@@ -4,9 +4,15 @@ headings = document.getElementsByClassName("table-heading"),
 colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"), colour3 = document.getElementById("colour-3"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"},
 maxSubjects = 7,
+toolBox = document.getElementById("tools"),
 dateDisplay = document.getElementById("date");
 
 // Retrieve data
+if (localStorage["notes"]) {
+  var notes = JSON.parse(localStorage.getItem("notes"));
+} else {
+  var notes = new Object();
+};
 if (localStorage["data"]) { // Local Storage
   var data = JSON.parse(localStorage.getItem("data"));
   if (!data.subjects[7]) {
@@ -43,8 +49,8 @@ function printData() {
       cell.classList.add("valid");
       cell.title = subject.name;
       if (subject.teacher.length > 0) {cell.title += " | " + subject.teacher};
-      printCell(a, c, subject);
       cell.appendChild(a);
+      printCell(a, c, subject, false);
       if (data.options.hasOwnProperty("highlightClasses")) {cell.style.backgroundColor = subject.highlight};
     } else {
       var period = getPeriod(c);
@@ -89,6 +95,7 @@ function printData() {
   return "Data printed";
 };
 
+document.getElementsByClassName("sticker")[0].checked = true;
 function runEditor(subject) {
   if (subject == 0) {
     saveDetails();
@@ -100,6 +107,7 @@ function runEditor(subject) {
     document.getElementsByClassName("sticker")[0].checked = true;
     return;
   };
+  toolBox.style.display = "none";
   for (var c = 0; c < 20; c++) {
     let cell = sessions[c];
     let currentCell = c;
@@ -107,12 +115,15 @@ function runEditor(subject) {
     cell.innerHTML = "";
     cell.classList.add("editing");
     if (!isNaN(data.periods[currentCell]) && data.periods[currentCell] > 0) { // Print existing periods
-      printCell(cell, currentCell, data.subjects[data.periods[currentCell]])
+      printCell(cell, currentCell, data.subjects[data.periods[currentCell]], true)
     };
     cell.onclick = function () {
+      if (document.activeElement.classList.contains("notes")) { // If clicked on notes textarea
+        return;
+      };
       if (data.periods[currentCell] != subject) { // Update cell
         data.periods[currentCell] = subject;
-        printCell(cell, currentCell, data.subjects[subject]);
+        printCell(cell, currentCell, data.subjects[subject], true);
         console.log("Cell " + currentCell + " changed to " + subject);
         if (data.options.hasOwnProperty("highlightClasses")) {cell.style.backgroundColor = data.subjects[subject].highlight};
       } else { // Empty cell
@@ -150,7 +161,8 @@ function saveDetails() {
   console.log("Saved Details");
   localStorage.setItem("data", JSON.stringify(data));
   document.getElementsByClassName("sticker")[0].checked = true;
-  alert("Your timetable has been saved. Be sure to backup to the URL and bookmark it in case it disappears!")
+  alert("Your timetable has been saved. Be sure to backup to the URL and bookmark it in case it disappears!");
+  toolBox.style.display = "initial";
 };
 
 function fillInputs() {
@@ -166,13 +178,14 @@ function fillInputs() {
   if (data.options.hasOwnProperty("displayNames")) {document.getElementById("tnames").checked = true};
   if (data.options.hasOwnProperty("displayCodes")) {document.getElementById("scodes").checked = true};
   if (data.options.hasOwnProperty("highlightClasses")) {document.getElementById("hilite").checked = true};
+  if (data.options.hasOwnProperty("displayNotes")) {document.getElementById("dnotes").checked = true};
   if (data.options.hasOwnProperty("cellSize")) {document.getElementById("cell-resizer").value = data.options.cellSize};
   if (data.options.hasOwnProperty("customColour1")) {document.getElementById("colour-1").value = data.options.customColour1};
   if (data.options.hasOwnProperty("customColour2")) {document.getElementById("colour-2").value = data.options.customColour2};
   if (data.options.hasOwnProperty("customColour3")) {document.getElementById("colour-3").value = data.options.customColour3};
 };
 
-function printCell(parent, pos, subject) {
+function printCell(parent, pos, subject, editMode) {
   parent.innerHTML = "";
   var period = getPeriod(pos);
   let div = document.createElement("div");
@@ -180,6 +193,26 @@ function printCell(parent, pos, subject) {
   if (data.options.hasOwnProperty("displayNames") && subject.teacher != "") {div.innerHTML += "<br>" + subject.teacher};
   if (data.options.hasOwnProperty("displayCodes") && subject.code != "") {div.innerHTML += "<br>" + subject.code};
   parent.appendChild(div);
+
+  if (data.options.hasOwnProperty("displayNotes")) {
+    let note = document.createElement("textarea");
+    note.classList.add("notes");
+    if (notes.hasOwnProperty(pos)) {
+      note.value = notes[pos];
+    };
+    if (editMode) {
+      note.readOnly = false;
+      note.onkeyup = function () {
+        notes[pos] = note.value;
+        localStorage.setItem("notes", JSON.stringify(notes));
+        //console.log(notes);
+      };
+      parent.appendChild(note);
+    } else {
+      note.readOnly = true;
+      parent.parentNode.appendChild(note);
+    };
+  };
 };
 
 function getPeriod(pos) {
@@ -250,6 +283,17 @@ function check(option) {
         console.log(option + " marked true");
       } else {
         delete data.options.highlightClasses;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked false");
+      };
+      break;
+    case "dnotes":
+      if (box.checked) {
+        data.options.displayNotes = true;
+        localStorage.setItem("data", JSON.stringify(data));
+        console.log(option + " marked true");
+      } else {
+        delete data.options.displayNotes;
         localStorage.setItem("data", JSON.stringify(data));
         console.log(option + " marked false");
       };
@@ -361,4 +405,25 @@ function displayDate() {
   dateDisplay.innerHTML = hour + ":" + minutes + ":" + seconds + " " + cycle + " | " + day + "/" + month + "/" + year;
 };
 displayDate();
-setInterval(displayDate, 1000)
+setInterval(displayDate, 1000);
+
+var easterEggActive = false, easterEggSpeed = 3;
+document.getElementById("easter-egg").addEventListener("click", function () {
+  if (easterEggActive) {
+    easterEggSpeed = easterEggSpeed * 2 / 3;
+    for (const session in sessions) {
+      if (sessions.hasOwnProperty(session)) {
+        const cell = sessions[session];
+        cell.style.animationDuration = easterEggSpeed + "s";
+      };
+    };
+  } else {
+    easterEggActive = true;
+    for (const session in sessions) {
+      if (sessions.hasOwnProperty(session)) {
+        const cell = sessions[session];
+        cell.classList.add("easter-egg");
+      };
+    };
+  };
+});

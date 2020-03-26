@@ -22,8 +22,18 @@ td.sessions a div, td.editing div, td.break-heading {
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
-td.valid {
+td.sessions {
   transition: .25s ease;
+}
+td.easter-egg {
+  animation-name: rotation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes rotation {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
 }
 td.valid:hover, td.valid#current:hover {
   background-color: lightgrey !important;
@@ -53,4 +63,12 @@ p#date {
   margin-top: 0;
   padding-top: 0;
   font-weight: bold;
+}
+textarea.notes {
+  resize: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  margin: 0;
+  color: white;
+  width: 100%;
 }
