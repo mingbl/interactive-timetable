@@ -40,6 +40,7 @@ if (localStorage["data"]) { // Local Storage
   fillInputs();
   setSize();
   setColours();
+  localStorage.setItem("data", JSON.stringify(data));
 } else { // Create new
   var data = {
     subjects: new Object(),
