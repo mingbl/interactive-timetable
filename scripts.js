@@ -31,7 +31,7 @@ if (localStorage["data"]) { // Local Storage
     data.subjects[8].teacher = "";
     data.subjects[8].highlight = "#808080";
   };
-  if (data.periods.length < 30) {
+  if (data.periods.length != 30) {
     data.periods.splice(10, 0, null, null, null, null, null);
     data.periods.splice(20, 0, null, null, null, null, null);
   };
