@@ -2,8 +2,8 @@ const sessions = document.getElementsByClassName("sessions"),
 resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("table-heading"),
 colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"), colour3 = document.getElementById("colour-3"),
-periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:45-12:05", 3: "12:50-2:00"},
-maxSubjects = 7,
+periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:20-10:45", 3: "10:45-12:05", 4: "12:05-12:50", 5: "12:50-2:00"},
+maxSubjects = 8,
 toolBox = document.getElementById("tools"),
 dateDisplay = document.getElementById("date");
 
@@ -23,6 +23,19 @@ if (localStorage["data"]) { // Local Storage
     data.subjects[7].teacher = "";
     data.subjects[7].highlight = "#808080";
   };
+  if (!data.subjects[8]) {
+    data.subjects[8] = new Object();
+    data.subjects[8].code = "";
+    data.subjects[8].name = "";
+    data.subjects[8].link = "";
+    data.subjects[8].teacher = "";
+    data.subjects[8].highlight = "#808080";
+  };
+  if (data.periods.length < 30) {
+    data.periods.splice(10, 0, null, null, null, null, null);
+    data.periods.splice(20, 0, null, null, null, null, null);
+  };
+  console.log(data.periods);
   printData();
   fillInputs();
   setSize();
@@ -37,7 +50,7 @@ if (localStorage["data"]) { // Local Storage
 console.log(data);
 
 function printData() {
-  for (var c = 0; c < 20; c++) { // Print to timetable
+  for (var c = 0; c < 30; c++) { // Print to timetable
     let cell = sessions[c];
     //cell.title = "";
     cell.innerHTML = "";
@@ -73,14 +86,14 @@ function printData() {
         document.getElementById("period-4").children[day].id = "current";
         document.getElementById("period-4").children[0].classList.add("currentHeadings");
       } else if (time >= 12 + 5/60) {
-        document.getElementsByClassName("breaks")[1].children[1].id = "current";
-        document.getElementsByClassName("breaks")[1].classList.add("currentHeadings");
+        document.getElementById("breaks-2").children[day].id = "current";
+        document.getElementById("breaks-2").children[0].classList.add("currentHeadings");
       } else if (time >= 10 + 40/60) {
         document.getElementById("period-3").children[day].id = "current";
         document.getElementById("period-3").children[0].classList.add("currentHeadings");
       } else if (time >= 10 + 20/60) {
-        document.getElementsByClassName("breaks")[0].children[1].id = "current";
-        document.getElementsByClassName("breaks")[0].classList.add("currentHeadings");
+        document.getElementById("breaks-1").children[day].id = "current";
+        document.getElementById("breaks-1").children[0].classList.add("currentHeadings");
       } else if (time >= 9 + 0/60) {
         document.getElementById("period-2").children[day].id = "current";
         document.getElementById("period-2").children[0].classList.add("currentHeadings");
@@ -108,7 +121,7 @@ function runEditor(subject) {
     return;
   };
   toolBox.style.display = "none";
-  for (var c = 0; c < 20; c++) {
+  for (var c = 0; c < 30; c++) {
     let cell = sessions[c];
     let currentCell = c;
     if (cell.classList.contains("valid")) {cell.classList.remove("valid")};
@@ -152,7 +165,7 @@ function saveDetails() {
       data.subjects[i].highlight = "#808080";
     }
   };
-  for (var c = 0; c < 20; c++) {
+  for (var c = 0; c < 30; c++) {
     let cell = sessions[c];
     if (cell.classList.contains("editing")) {cell.classList.remove("editing")};
     cell.onclick = undefined;
@@ -224,6 +237,10 @@ function getPeriod(pos) {
     var period = 2;
   } else if (pos < 20) {
     var period = 3;
+  } else if (pos < 25) {
+    var period = 4;
+  } else if (pos < 30) {
+    var period = 5;
   };
   return periodTimes[period];
 };
