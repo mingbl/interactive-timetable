@@ -125,11 +125,14 @@ input[type='color']:hover {
   width: 100%;
   vertical-align: middle;
 }
-#details-table-heading, .settings th {
-  background-color: rgba(0, 0, 0, 0.4)
+#details-table-heading, .settings th, #timetable th {
+  background-color: rgba(0, 0, 0, 0.4);
 }
-.subject-rows:nth-child(even), .settings tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.2)
+.subject-rows:nth-child(even), .settings tr:nth-child(even), #timetable tr td:nth-child(1) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+#timetable tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .settings {
   width: 500px;
