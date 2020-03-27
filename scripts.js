@@ -167,8 +167,7 @@ function printData() {
   // Highlight the current session
   let date = new Date();
   let day = date.getDay();
-  //let hour = date.getHours();
-  let hour = 8;
+  let hour = date.getHours();
   let minutes = date.getMinutes();
   let time = hour + minutes / 60;
   console.log(time);
