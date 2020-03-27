@@ -5,21 +5,26 @@
     <title> Timetable </title>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body> <center>
+  <body>
     <h1> Timetable </h1>
-    <p id="date">DISPLAY DATE (If the date is not displayed here, JavaScript is disabled. Or just really slow.)</p>
+    <p id="date">Loading date... (If you're reading this, JavaScript is disabled or there's an error in the code.)</p>
+    <div id="announcement">
+      <p>!!! NEW !!! New interface</p>
+      <a href="https://github.com/mingbl/timetable/blob/master/README.md">Guide / Support</a>
+      <button onclick="hideMe()">Hide me</button>
+    </div>
     <div id="timetable">
       <table>
         <tr>
           <th style="width:3vw;max-width:150px"> </th>
-          <th style="font-weight:bold" class="table-heading"> Monday </th>
-          <th style="font-weight:bold" class="table-heading"> Tuesday </th>
-          <th style="font-weight:bold" class="table-heading"> Wednesday </th>
-          <th style="font-weight:bold" class="table-heading"> Thursday </th>
-          <th style="font-weight:bold" class="table-heading"> Friday </th>
+          <th class="table-heading day-heading"> Monday </th>
+          <th class="table-heading day-heading"> Tuesday </th>
+          <th class="table-heading day-heading"> Wednesday </th>
+          <th class="table-heading day-heading"> Thursday </th>
+          <th class="table-heading day-heading"> Friday </th>
         </tr>
         <tr id="period-1">
-          <td style="font-weight:bold"> P1 </td>
+          <td class="table-heading"> P1 </td>
           <td class="sessions"></td>
           <td class="sessions"></td>
           <td class="sessions"></td>
@@ -27,7 +32,7 @@
           <td class="sessions"></td>
         </tr>
         <tr id="period-2">
-          <td style="font-weight:bold"> P2 </td>
+          <td class="table-heading"> P2 </td>
           <td class="sessions"></td>
           <td class="sessions"></td>
           <td class="sessions"></td>
@@ -35,7 +40,7 @@
           <td class="sessions"></td>
         </tr>
         <tr id="breaks-1">
-          <td style="font-weight:bold" class="break-heading"> MT </td>
+          <td class="table-heading"> MT </td>
           <td class="sessions"></td>
           <td class="sessions"></td>
           <td class="sessions"></td>
@@ -43,7 +48,7 @@
           <td class="sessions"></td>
         </tr>
         <tr id="period-3">
-          <td style="font-weight:bold"> P3 </td>
+          <td class="table-heading"> P3 </td>
           <td class="sessions"></td>
           <td class="sessions"></td>
           <td class="sessions"></td>
@@ -51,7 +56,7 @@
           <td class="sessions"></td>
         </tr>
         <tr id="breaks-2">
-          <td style="font-weight:bold" class="break-heading"> L </td>
+          <td class="table-heading"> L </td>
           <td class="sessions"></td>
           <td class="sessions"></td>
           <td class="sessions"></td>
@@ -68,123 +73,142 @@
         </tr>
       </table>
     </div>
+
+    <h2> Subject Details </h2>
     <div id="subject-details">
-      <h2> Subject Details </h2>
       <table id="details-form">
-        <tr>
-          <th> Code </th>
-          <th> Name* </th>
-          <th> Teacher </th>
-          <th> Link* </th>
-          <th style="width:auto"> Colour </th>
-          <th style="width:1.5vw"> <input type="radio" name="sticker" class="sticker" value="0" onclick="runEditor(0)" checked title="Exit Editing"> </th>
-        </tr>
-        <div>
-          <tr id="subject-1">
-            <td> <input type="text" class="inputs-1" placeholder="PHY10D"> </td>
-            <td> <input type="text" class="inputs-1" placeholder="Physics"> </td>
-            <td> <input type="text" class="inputs-1" placeholder="John Smith"> </td>
-            <td> <input type="text" class="inputs-1" placeholder="https://brushyourteeth.gitlab.io/clickable-timetable/"> </td>
-            <td> <input type="color" class="inputs-1" value="#DF68A8" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(1)" title="Place Subject 1 on the timetable"> </td>
+        <thead>
+          <tr id="details-table-heading">
+            <th> Name* </th>
+            <th> Link* </th>
+            <th class="controller-containers"> <input type="radio" name="controllers" class="controllers" value="0" onclick="runEditor(0)" checked title="Exit Editing"> </th>
+            <th> Colour </th>
+            <th> Teacher </th>
+            <th> Code </th>
           </tr>
-          <tr id="subject-2">
-            <td> <input type="text" class="inputs-2"> </td>
-            <td> <input type="text" class="inputs-2"> </td>
-            <td> <input type="text" class="inputs-2"> </td>
-            <td> <input type="text" class="inputs-2"> </td>
-            <td> <input type="color" class="inputs-2" value="#DF4152" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(2)" title="Place Subject 2 on the timetable"> </td>
+        </thead>
+        
+        <tbody id="details-table">
+          <tr class="subject-rows">
+            <td> <input type="text" class="names" placeholder="Physics"> </td>
+            <td> <input type="text" class="links" placeholder="https://somebodysave.me"> </td>
+            <td class="controller-containers"> <input type="radio" name="controllers" class="controllers" onclick="runEditor(1)" title="Place Subject 1 on the timetable"> </td>
+            <td> <input type="color" class="highlights" value="#DF68A8" title="Highlight Colour"> </td>
+            <td> <input type="text" class="teachers" placeholder="John Smith"> </td>
+            <td> <input type="text" class="codes" placeholder="PHY121D"> </td>
           </tr>
-          <tr id="subject-3">
-            <td> <input type="text" class="inputs-3"> </td>
-            <td> <input type="text" class="inputs-3"> </td>
-            <td> <input type="text" class="inputs-3"> </td>
-            <td> <input type="text" class="inputs-3"> </td>
-            <td> <input type="color" class="inputs-3" value="#E99B5B" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(3)" title="Place Subject 3 on the timetable"> </td>
-          </tr>
-          <tr id="subject-4">
-            <td> <input type="text" class="inputs-4"> </td>
-            <td> <input type="text" class="inputs-4"> </td>
-            <td> <input type="text" class="inputs-4"> </td>
-            <td> <input type="text" class="inputs-4"> </td>
-            <td> <input type="color" class="inputs-4" value="#F4E963" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(4)" title="Place Subject 4 on the timetable"> </td>
-          </tr>
-          <tr id="subject-5">
-            <td> <input type="text" class="inputs-5"> </td>
-            <td> <input type="text" class="inputs-5"> </td>
-            <td> <input type="text" class="inputs-5"> </td>
-            <td> <input type="text" class="inputs-5"> </td>
-            <td> <input type="color" class="inputs-5" value="#50A05C" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(5)" title="Place Subject 5 on the timetable"> </td>
-          </tr>
-          <tr id="subject-6">
-            <td> <input type="text" class="inputs-6"> </td>
-            <td> <input type="text" class="inputs-6"> </td>
-            <td> <input type="text" class="inputs-6"> </td>
-            <td> <input type="text" class="inputs-6"> </td>
-            <td> <input type="color" class="inputs-6" value="#4F96BA" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(6)" title="Place Subject 6 on the timetable"> </td>
-          </tr>
-          <tr id="subject-7">
-            <td> <input type="text" class="inputs-7"> </td>
-            <td> <input type="text" class="inputs-7"> </td>
-            <td> <input type="text" class="inputs-7"> </td>
-            <td> <input type="text" class="inputs-7"> </td>
-            <td> <input type="color" class="inputs-7" value="#4D5A99" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(7)" title="Place Subject 7 on the timetable"> </td>
-          </tr>
-          <tr id="subject-7">
-            <td> <input type="text" class="inputs-8"> </td>
-            <td> <input type="text" class="inputs-8"> </td>
-            <td> <input type="text" class="inputs-8"> </td>
-            <td> <input type="text" class="inputs-8"> </td>
-            <td> <input type="color" class="inputs-8" value="#7E3B8B" title="Highlight Colour"> </td>
-            <td> <input type="radio" name="sticker" class="sticker" onclick="runEditor(8)" title="Place Subject 8 on the timetable"> </td>
-          </tr>
-        </div>
+        </tbody>
       </table>
-      <button type="button" onclick="saveDetails()"> Save </button>
-      <button type="button" onclick="backupURL()"> Backup </button>
-      <button type="button" onclick="importURL()"> Import </button>
-      <br>
-      <div id="tools">
-        <input type="color" value="#FFFFFF" title="Background Colour" id="colour-1">
-        <input type="color" value="#000000" title="Table & Text Colour" id="colour-2">
-        <input type="color" value="#000000" title="Highlighted Sessions Text Colour" id="colour-3">
-        <br>
-        <input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')">
-        <input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')">
-        <input type="checkbox" id="hilite" title="Use Highlight Colours" onclick="check('hilite')">
-        <input type="checkbox" id="dnotes" title="Enable Notes" onclick="check('dnotes')">
-        <br>
-        <input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells">
+
+      <div id="majors">
+        <button type="button" class="save-button" onclick="saveDetails()"> Save </button>
       </div>
     </div>
-    <p>Version II13E | Created by ML</p>
-    <a href="https://github.com/mingbl/timetable/blob/master/README.md"><p>Guide / Support</p></a>
-    <p id="changeII13A" onclick="hideMe()"><b>!!! NEW !!! ENABLE NOTES! (4th checkbox) ENTER EDITING MODE USING THE RADIO/CIRCLE BUTTONS! (Click me to hide)</b></p>
-    <button id="easter-egg">Easter egg</button>
-    <button id="reset" onclick="reset()">Reset</button>
-  </center>
-  <script src="scripts.js" charset="utf-8"></script>
-  <script>
-    if (localStorage["hideII13A"]) {
-      document.getElementById("changeII13A").style.display = "none";
-    };
-    function hideMe() {
-      document.getElementById("changeII13A").style.display = "none";
-      localStorage.setItem("hideII13A", "true");
-    };
-    function reset() {
-      let confirmation = confirm("Reset your local storage?");
-      if (confirmation) {
-        localStorage.clear();
-        window.location.reload();
+
+    <h3>Settings</h3>
+    <div id="settings-box">
+      <table class="settings">
+        <tbody>
+          <tr>
+            <th colspan="2">Toggles</th>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="tnames" title="Show Teacher Names" onclick="check('tnames')"></td>
+            <td class="description">Show teacher names</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="scodes" title="Show Subject Codes" onclick="check('scodes')"></td>
+            <td class="description">Show subject codes</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="hilite" title="Use Highlight Colours" onclick="check('hilite')"></td>
+            <td class="description">Use colour-coding</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="dnotes" title="Enable Notes" onclick="check('dnotes')"></td>
+            <td class="description">Enable notes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="settings">
+        <tbody>
+          <tr>
+            <th colspan="2">Colours</th>
+          </tr>
+          <tr>
+            <td><input type="color" title="Background Colour" id="body_bg"></td>
+            <td class="description">Background</td>
+          </tr>
+          <tr>
+            <td><input type="color" title="Text Colour" id="default_text"></td>
+            <td class="description">Text</td>
+          </tr>
+          <tr>
+            <td><input type="color" title="Highlighted Sessions Text Colour" id="highlighted_text"></td>
+            <td class="description">Highlighted text</td>
+          </tr>
+          <tr>
+            <td><input type="color" title="Table Border Colour" id="table_border"></td>
+            <td class="description">Table borders</td>
+          </tr>
+          <tr>
+            <td><input type="color" title="Heading Colour" id="heading_bg"></td>
+            <td class="description">Headings</td>
+          </tr>
+          <tr>
+            <td><input type="color" title="Notes Text Colour" id="notes_text"></td>
+            <td class="description">Notes text</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="settings">
+        <tbody>
+          <tr>
+            <th colspan="2">Misc.</th>
+          </tr>
+          <tr>
+            <td><button id="easter-egg">Easter egg</button></td>
+            <td class="description">do a barrel roll</td>
+          </tr>
+          <tr>
+            <td><input type="range" id="cell-resizer" step=".1" value="1" min="1" max="2" title="Expand table cells"></td>
+            <td class="description">Table width</td>
+          </tr>
+          <tr>
+            <td><button type="button" onclick="resetColours()">Reset Colours</button></td>
+            <td>Reset Colours</td>
+          </tr>
+          <tr>
+            <td><button type="button" onclick="importURL()">Import</button></td>
+            <td>Import data from URL</td>
+          </tr>
+          <tr>
+            <td><button id="reset" onclick="reset()">Reset</button></td>
+            <td class="description">Reset data</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button style="margin-top:2vh;" class="save-button" type="button" onclick="saveDetails()"> Save </button>
+
+      <p>Remember to save!</p>
+    </div>
+
+    <div id="footer">
+      <p style="font-weight: bold;">Version II13F | Created by ML</p>
+      <a href="https://github.com/mingbl/timetable/blob/master/README.md">Guide / Support</a>
+    </div>
+
+    <script src="scripts.js" charset="utf-8"></script>
+
+    <script>
+      function hideMe() {
+        document.getElementById("announcement").style.display = "none";
+        localStorage.setItem("hideII13F", "true");
       };
-    };
-  </script>
+      if (localStorage["hideII13F"]) {hideMe()};
+    </script>
   </body>
 </html>

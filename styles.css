@@ -1,28 +1,53 @@
-h1, h2, p, th, td, td.sessions a {
+h1, h2, h3, p, th, td, td.sessions a, a, textarea {
   font-family: helvetica;
   text-align: center;
 }
 a {
   color: inherit;
 }
+#timetable {
+  display: flex;
+  justify-content: center;
+}
+#subject-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#details-form {
+  width: 750px;
+}
+#majors {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2vh;
+}
+#settings-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#footer {
+  text-align: center;
+}
 table, tr, td, th {
   border: 1px solid;
   border-collapse: collapse;
 }
-th {
-  width: 20vw;
+.table-heading {
+  font-weight: bold;
 }
-th {
+.day-heading {
+  width: 20vw;
   max-width: 150px;
 }
 td.sessions a {
   text-decoration: none;
 }
-td.sessions a div, td.editing div, td.break-heading {
-  padding-top: 1vh;
-  padding-bottom: 1vh;
+.sessions div {
+  padding: 1vh;
 }
-td.sessions {
+.sessions {
   transition: .25s ease;
 }
 td.easter-egg {
@@ -45,12 +70,15 @@ td.editing {
   transition: .25s ease;
 }
 td.editing:hover {
-  background-color: grey;
+  /*background-color: grey !important;*/
   cursor: pointer;
 }
-td#current, .currentHeadings {
+td#current, .current-headings {
   background-color: grey;
   font-weight: bold;
+}
+td#current {
+  text-decoration: underline;
 }
 input[type="text"] {
   border: 0;
@@ -71,4 +99,70 @@ textarea.notes {
   margin: 0;
   color: white;
   width: 100%;
+  vertical-align: bottom;
+}
+
+input[type='text'] {
+  background-color: inherit;
+}
+
+.controller-containers {
+  text-align: justify;
+}
+
+input[type='color'] {
+  padding: 0;
+  border: none;
+  margin: 0;
+  transition: .25s;
+}
+input[type='color']:hover {
+  /*filter: grayscale(.5);*/
+  cursor: pointer;
+  filter: brightness(.8);
+}
+.highlights {
+  width: 100%;
+  vertical-align: middle;
+}
+#details-table-heading, .settings th {
+  background-color: rgba(0, 0, 0, 0.4)
+}
+.subject-rows:nth-child(even), .settings tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.2)
+}
+.settings {
+  width: 500px;
+}
+.description, .settings th {
+  padding: 1vh;
+}
+#details-form td, #details-form th {
+  padding: 1vh;
+}
+button {
+  padding-top: .5vh;
+  padding-bottom: .5vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+  font-weight: bold;
+  cursor: pointer;
+}
+input[type='checkbox'], input[type='radio'] {
+  transform: scale(1.5);
+  cursor: pointer;
+}
+#announcement {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 2vh;
+}
+#announcement p {
+  font-weight: bold;
+  margin: 0;
+}
+#announcement button {
+  margin-top: 1vh;
+  max-width: 200px;
 }

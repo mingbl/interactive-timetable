@@ -1,18 +1,42 @@
 const sessions = document.getElementsByClassName("sessions"),
 resizer = document.getElementById("cell-resizer"),
-headings = document.getElementsByClassName("table-heading"),
-colour1 = document.getElementById("colour-1"), colour2 = document.getElementById("colour-2"), colour3 = document.getElementById("colour-3"),
+headings = document.getElementsByClassName("day-heading"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:20-10:45", 3: "10:45-12:05", 4: "12:05-12:50", 5: "12:50-2:00"},
 maxSubjects = 8,
-toolBox = document.getElementById("tools"),
-dateDisplay = document.getElementById("date");
-
-// Retrieve data
-if (localStorage["notes"]) {
-  var notes = JSON.parse(localStorage.getItem("notes"));
-} else {
-  var notes = new Object();
+//toolBox = document.getElementById("tools"),
+settings = document.getElementById("settings-box"),
+dateDisplay = document.getElementById("date"),
+standard = {
+  details: [
+    "name",
+    "link",
+    "highlight",
+    "teacher",
+    "code",
+  ],
+  highlights: [
+    "#DF68A8",
+    "#DF4152",
+    "#E99B5B",
+    "#F4E963",
+    "#50A05C",
+    "#4F96BA",
+    "#4D5A99",
+    "#7E3B8B",
+  ],
+  colours: {
+    body_bg: "#1A1A1A",
+    default_text: "#FFFFFF",
+    highlighted_text: "#000000",
+    table_border: "#4750B8",
+    /*hover_colour: "#D3D3D3",
+    active_colour: "#808080",*/
+    heading_bg: "#808080",
+    notes_text: "#FFFFFF",
+  },
 };
+
+// Retrieve or initialise data
 if (localStorage["data"]) { // Local Storage
   var data = JSON.parse(localStorage.getItem("data"));
   if (!data.subjects[7]) {
@@ -21,7 +45,7 @@ if (localStorage["data"]) { // Local Storage
     data.subjects[7].name = "";
     data.subjects[7].link = "";
     data.subjects[7].teacher = "";
-    data.subjects[7].highlight = "#808080";
+    data.subjects[7].highlight = standard.highlights[6];
   };
   if (!data.subjects[8]) {
     data.subjects[8] = new Object();
@@ -29,31 +53,93 @@ if (localStorage["data"]) { // Local Storage
     data.subjects[8].name = "";
     data.subjects[8].link = "";
     data.subjects[8].teacher = "";
-    data.subjects[8].highlight = "#808080";
+    data.subjects[8].highlight = standard.highlights[7];
   };
   if (data.periods.length != 30) {
     data.periods.splice(10, 0, null, null, null, null, null);
     data.periods.splice(20, 0, null, null, null, null, null);
   };
-  console.log(data.periods);
-  printData();
-  fillInputs();
-  setSize();
-  setColours();
+  if (!data.options.hasOwnProperty("colours")) {
+    data.options.colours = {};
+  };
+  if (data.options.hasOwnProperty("customColour1")) {data.options.colours["body_bg"] = data.options["customColour1"]; delete data.options["customColour1"]};
+  if (data.options.hasOwnProperty("customColour2")) {data.options.colours["default_text"] = data.options["customColour2"]; delete data.options["customColour2"]};
+  if (data.options.hasOwnProperty("customColour3")) {data.options.colours["highlighted_text"] = data.options["customColour3"]; delete data.options["customColour3"]};
   localStorage.setItem("data", JSON.stringify(data));
 } else { // Create new
   var data = {
-    subjects: new Object(),
+    subjects: {},
     periods: [],
-    options: new Object(),
+    options: {
+      colours: {},
+    },
   };
 };
-console.log(data);
+if (localStorage["notes"]) {
+  var notes = JSON.parse(localStorage.getItem("notes"));
+} else {
+  var notes = new Object();
+};
+
+console.log({data: data, notes: notes});
+
+// Generate subject details table
+function createDetailsTable() {
+  let table = document.getElementById("details-table");
+  let types = {
+    name: "text",
+    link: "text",
+    controller: "radio",
+    highlight: "color",
+    teacher: "text",
+    code: "text",
+  };
+  for (let i = 2; i <= maxSubjects; i++) {
+    let row = document.createElement("tr");
+    row.classList.add("subject-rows");
+    table.appendChild(row);
+
+    for (const key in types) {
+      if (types.hasOwnProperty(key)) {
+        const detail = key;
+        const type = types[key];
+        
+        let cell = document.createElement("td");
+        row.appendChild(cell);
+
+        let input = document.createElement("input");
+        input.type = type;
+        input.classList.add(detail + "s");
+        cell.appendChild(input);
+
+        if (key === "highlight") {
+          input.value = standard.highlights[i - 1];
+        } else
+        if (key === "controller") {
+          input.name = "controllers";
+          let c = i;
+          input.title = "Place Subject " + c + " on the timetable";
+          input.addEventListener("click", function () {runEditor(c)});
+          cell.classList.add("controller-containers");
+        };
+      };
+    };
+  };
+};
+
+// Start
+createDetailsTable();
+if (localStorage["data"]) {
+  printData();
+  fillInputs();
+  setSize();
+};
+setColours();
 
 function printData() {
   for (var c = 0; c < 30; c++) { // Print to timetable
     let cell = sessions[c];
-    //cell.title = "";
+
     cell.innerHTML = "";
     let a = document.createElement("a");
     cell.style.removeProperty("background-color");
@@ -61,8 +147,12 @@ function printData() {
       let subject = data.subjects[data.periods[c]];
       a.href = subject.link;
       cell.classList.add("valid");
-      cell.title = subject.name;
-      if (subject.teacher.length > 0) {cell.title += " | " + subject.teacher};
+
+      let title = [];
+      if (subject.name != "") {title.push(subject.name)};
+      if (subject.teacher != "") {title.push(subject.teacher)};
+      cell.title = title.join(" | ");
+
       cell.appendChild(a);
       printCell(a, c, subject, false);
       if (data.options.hasOwnProperty("highlightClasses")) {cell.style.backgroundColor = subject.highlight};
@@ -77,7 +167,8 @@ function printData() {
   // Highlight the current session
   let date = new Date();
   let day = date.getDay();
-  let hour = date.getHours();
+  //let hour = date.getHours();
+  let hour = 8;
   let minutes = date.getMinutes();
   let time = hour + minutes / 60;
   console.log(time);
@@ -85,31 +176,31 @@ function printData() {
     if (time <= 14) {
       if (time >= 12 + 40/60) {
         document.getElementById("period-4").children[day].id = "current";
-        document.getElementById("period-4").children[0].classList.add("currentHeadings");
+        document.getElementById("period-4").children[0].classList.add("current-headings");
       } else if (time >= 12 + 5/60) {
         document.getElementById("breaks-2").children[day].id = "current";
-        document.getElementById("breaks-2").children[0].classList.add("currentHeadings");
+        document.getElementById("breaks-2").children[0].classList.add("current-headings");
       } else if (time >= 10 + 40/60) {
         document.getElementById("period-3").children[day].id = "current";
-        document.getElementById("period-3").children[0].classList.add("currentHeadings");
+        document.getElementById("period-3").children[0].classList.add("current-headings");
       } else if (time >= 10 + 20/60) {
         document.getElementById("breaks-1").children[day].id = "current";
-        document.getElementById("breaks-1").children[0].classList.add("currentHeadings");
+        document.getElementById("breaks-1").children[0].classList.add("current-headings");
       } else if (time >= 9 + 0/60) {
         document.getElementById("period-2").children[day].id = "current";
-        document.getElementById("period-2").children[0].classList.add("currentHeadings");
+        document.getElementById("period-2").children[0].classList.add("current-headings");
       } else if (time >= 7 + 50/60) {
         document.getElementById("period-1").children[day].id = "current";
-        document.getElementById("period-1").children[0].classList.add("currentHeadings");
+        document.getElementById("period-1").children[0].classList.add("current-headings");
       };
     };
-    document.getElementsByClassName("table-heading")[day-1].classList.add("currentHeadings");
+    document.getElementsByClassName("table-heading")[day-1].classList.add("current-headings");
   };
   setColours();
   return "Data printed";
 };
 
-document.getElementsByClassName("sticker")[0].checked = true;
+document.getElementsByClassName("controllers")[0].checked = true;
 function runEditor(subject) {
   if (subject == 0) {
     saveDetails();
@@ -118,10 +209,10 @@ function runEditor(subject) {
   };
   if (!data.subjects.hasOwnProperty("1")) {
     alert("Click Save first!");
-    document.getElementsByClassName("sticker")[0].checked = true;
+    document.getElementsByClassName("controllers")[0].checked = true;
     return;
   };
-  toolBox.style.display = "none";
+  settings.style.display = "none";
   for (var c = 0; c < 30; c++) {
     let cell = sessions[c];
     let currentCell = c;
@@ -153,59 +244,67 @@ function runEditor(subject) {
 
 function saveDetails() {
   for (var i = 1; i <= maxSubjects; i++) {
-    let inputs = document.getElementsByClassName("inputs-" + i);
-    data.subjects[i] = new Object();
-    data.subjects[i].code = inputs[0].value;
-    data.subjects[i].name = inputs[1].value;
-    data.subjects[i].link = inputs[3].value;
-    data.subjects[i].teacher = inputs[2].value;
-    //data.subjects[i].highlight = inputs[4].value;
-    if (inputs[4].value != null) {
-      data.subjects[i].highlight = inputs[4].value;
-    } else {
-      data.subjects[i].highlight = "#808080";
-    }
+    data.subjects[i] = {};
+    for (const key in standard.details) {
+      if (standard.details.hasOwnProperty(key)) {
+        const detail = standard.details[key];
+        data.subjects[i][detail] = document.getElementsByClassName(detail + "s")[i - 1].value;
+      };
+    };
   };
+
   for (var c = 0; c < 30; c++) {
     let cell = sessions[c];
     if (cell.classList.contains("editing")) {cell.classList.remove("editing")};
     cell.onclick = undefined;
   };
+  
   printData();
   console.log("Saved Details");
   localStorage.setItem("data", JSON.stringify(data));
-  document.getElementsByClassName("sticker")[0].checked = true;
-  alert("Your timetable has been saved. Be sure to backup to the URL and bookmark it in case it disappears!");
-  toolBox.style.display = "initial";
+  document.getElementsByClassName("controllers")[0].checked = true;
+  backupURL();
+  //alert("Your timetable has been saved. Be sure to backup to the URL and bookmark it in case it disappears!");
+  settings.style.display = "flex";
 };
 
 function fillInputs() {
   for (var s = 1; s <= maxSubjects; s++) {
     let subject = data.subjects[s];
-    var inputs = document.getElementsByClassName("inputs-" + s);
+    /*var inputs = document.getElementsByClassName("inputs-" + s);
     inputs[0].value = subject.code;
     inputs[1].value = subject.name;
     inputs[3].value = subject.link;
     inputs[2].value = subject.teacher;
-    inputs[4].value = subject.highlight;
+    inputs[4].value = subject.highlight;*/
+    for (const key in standard.details) {
+      if (standard.details.hasOwnProperty(key)) {
+        const detail = standard.details[key];
+        document.getElementsByClassName(detail + "s")[s - 1].value = data.subjects[s][detail];
+      };
+    };
   };
   if (data.options.hasOwnProperty("displayNames")) {document.getElementById("tnames").checked = true};
   if (data.options.hasOwnProperty("displayCodes")) {document.getElementById("scodes").checked = true};
   if (data.options.hasOwnProperty("highlightClasses")) {document.getElementById("hilite").checked = true};
   if (data.options.hasOwnProperty("displayNotes")) {document.getElementById("dnotes").checked = true};
   if (data.options.hasOwnProperty("cellSize")) {document.getElementById("cell-resizer").value = data.options.cellSize};
-  if (data.options.hasOwnProperty("customColour1")) {document.getElementById("colour-1").value = data.options.customColour1};
-  if (data.options.hasOwnProperty("customColour2")) {document.getElementById("colour-2").value = data.options.customColour2};
-  if (data.options.hasOwnProperty("customColour3")) {document.getElementById("colour-3").value = data.options.customColour3};
+
+  if (data.options.colours.hasOwnProperty("body_bg")) {document.getElementById("body_bg").value = data.options.colours.body_bg};
+  if (data.options.colours.hasOwnProperty("default_text")) {document.getElementById("default_text").value = data.options.colours.default_text};
+  if (data.options.colours.hasOwnProperty("highlighted_text")) {document.getElementById("highlighted_text").value = data.options.colours.highlighted_text};
 };
 
 function printCell(parent, pos, subject, editMode) {
   parent.innerHTML = "";
-  var period = getPeriod(pos);
+  let timeRange = getPeriod(pos);
   let div = document.createElement("div");
-  div.innerHTML = period + "<br><b>" + subject.name + "</b>";
-  if (data.options.hasOwnProperty("displayNames") && subject.teacher != "") {div.innerHTML += "<br>" + subject.teacher};
-  if (data.options.hasOwnProperty("displayCodes") && subject.code != "") {div.innerHTML += "<br>" + subject.code};
+  let content = [];
+  content.push(timeRange);
+  if (subject.name != "") {content.push("<b>" + subject.name + "</b>")};
+  if (data.options.hasOwnProperty("displayNames") && subject.teacher != "") {content.push(subject.teacher)};
+  if (data.options.hasOwnProperty("displayCodes") && subject.code != "") {content.push(subject.code)};
+  div.innerHTML = content.join("<br>");
   parent.appendChild(div);
 
   if (data.options.hasOwnProperty("displayNotes")) {
@@ -249,7 +348,7 @@ function getPeriod(pos) {
 function backupURL() {
   if (!data.subjects.hasOwnProperty("1")) {alert("Your timetable is empty. Have you clicked 'Save' yet?"); return};
   window.location = "#" + JSON.stringify(data);
-  alert("Your data has been backed up to the URL. Bookmark this new page and click 'Import' if your timetable disappears.");
+  //alert("Your data has been backed up to the URL. Bookmark this new page and click 'Import' if your timetable disappears.");
 };
 
 function importURL() {
@@ -259,8 +358,7 @@ function importURL() {
   imported = imported.substr(web + 1, imported.length);
   data = JSON.parse(imported.toString());
   localStorage.setItem("data", JSON.stringify(data));
-  printData();
-  alert("Your data has been imported.");
+  //alert("Your data has been imported.");
   window.location.reload();
 };
 
@@ -348,51 +446,84 @@ function setSize() {
 
 
 // Custom Colours
-colour1.addEventListener("change", function () {
-  data.options.customColour1 = colour1.value;
-  if (localStorage["data"]) {
-    localStorage.setItem("data", JSON.stringify(data));
+for (const key in standard.colours) {
+  const input = document.getElementById(key);
+  
+  if (data.options.colours.hasOwnProperty(key)) {
+    input.value = data.options.colours[key];
+  } else {
+    input.value = standard.colours[key];
   };
-  setColours();
-});
-colour2.addEventListener("change", function () {
-  data.options.customColour2 = colour2.value;
-  if (localStorage["data"]) {
-    localStorage.setItem("data", JSON.stringify(data));
-  };
-  setColours();
-});
-colour3.addEventListener("change", function () {
-  data.options.customColour3 = colour3.value;
-  if (localStorage["data"]) {
-    localStorage.setItem("data", JSON.stringify(data));
-  };
-  setColours();
-});
+
+  input.addEventListener("change", function () {
+    data.options.colours[key] = input.value;
+
+    // Update local storage
+    if (localStorage["data"]) {
+      localStorage.setItem("data", JSON.stringify(data));
+    };
+    
+    setColours();
+  });
+};
+
 function setColours() {
-  if (data.options.hasOwnProperty("customColour1")) {
-    document.body.style.backgroundColor = data.options.customColour1;
-    let inputs = document.querySelectorAll("input[type='text']");
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].style.backgroundColor = data.options.customColour1;
+  const custom = data.options.colours;
+
+  function customColour(colour) {
+    return custom.hasOwnProperty(colour) ? custom[colour] : standard.colours[colour];
+  };
+
+  document.body.style.backgroundColor = customColour("body_bg");
+
+  {
+    let elements = document.querySelectorAll("h1,h2,h3,p,th,td,a,input[type='text'],div");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.color = customColour("default_text");
     };
   };
-  if (data.options.hasOwnProperty("customColour2")) {
-    let textElements = document.querySelectorAll("h1,h2,p,th,td,a,input[type='text'],div");
-    let borderElements = document.querySelectorAll("table,tr,td,th");
-    for (var i = 0; i < textElements.length; i++) {
-      textElements[i].style.color = data.options.customColour2;
-    };
-    for (var i = 0; i < borderElements.length; i++) {
-      borderElements[i].style.borderColor = data.options.customColour2;
+
+  {
+    let elements = document.querySelectorAll("table,tr,td,th");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.borderColor = customColour("table_border");
     };
   };
-  if (data.options.hasOwnProperty("customColour2") && data.options.hasOwnProperty("highlightClasses")) {
-    let textElements = document.querySelectorAll("td.valid > a > div");
-    for (var i = 0; i < textElements.length; i++) {
-      textElements[i].style.color = data.options.customColour3;
+
+  if (custom.hasOwnProperty("highlighted_text") && data.options.hasOwnProperty("highlightClasses")) {
+    let highlighted_text = custom["highlighted_text"];
+    let elements = document.querySelectorAll("td.valid > a > div");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.color = highlighted_text;
+    };
+    document.getElementById("current").style.textDecorationColor = highlighted_text;
+  };
+
+  {
+    let elements = document.querySelectorAll("td#current,.current-headings");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = customColour("heading_bg");
     };
   };
+
+  {
+    let elements = document.querySelectorAll("textarea.notes");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.color = customColour("notes_text");
+    };
+  };
+
+
+  /*let hover_colour = customColour("hover_colour");
+  let hoverElements = document.querySelectorAll("td.valid,td.valid#current");
+  for (var i = 0; i < hoverElements.length; i++) {
+    hoverElements[i].onmouseover = function() {
+      this.style.backgroundColor = hover_colour;
+    };
+    hoverElements[i].onmouseoff = function(this.style.backgroundColor) {
+
+    }
+  };*/
 };
 
 function displayDate() {
@@ -445,3 +576,25 @@ document.getElementById("easter-egg").addEventListener("click", function () {
     };
   };
 });
+
+function reset() {
+  let confirmation = confirm("Reset your local storage?");
+  if (confirmation) {
+    localStorage.clear();
+    window.location.reload();
+  };
+};
+
+function resetColours() {
+  if (!localStorage["data"]) {alert("You don't have any colours saved!"); return};
+  let confirmation = confirm("Reset your colours?");
+  if (!confirmation) {return};
+  for (let i = 0; i < standard.highlights.length; i++) {
+    const colour = standard.highlights[i];
+    data.subjects[i + 1].highlight = colour;
+  };
+  delete data.options.colours;
+  data.options.colours = JSON.parse(JSON.stringify(standard.colours));
+  localStorage.setItem("data", JSON.stringify(data));
+  window.location.reload();
+};
