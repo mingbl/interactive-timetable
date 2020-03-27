@@ -495,7 +495,9 @@ function setColours() {
     for (var i = 0; i < elements.length; i++) {
       elements[i].style.color = highlighted_text;
     };
-    document.getElementById("current").style.textDecorationColor = highlighted_text;
+    if (document.getElementById("current")) {
+      document.getElementById("current").style.textDecorationColor = highlighted_text;
+    };
   };
 
   {

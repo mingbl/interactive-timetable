@@ -197,11 +197,9 @@
     </div>
 
     <div id="footer">
-      <p style="font-weight: bold;">Version II13G | Created by ML</p>
+      <p style="font-weight: bold;">Version II13H | Created by ML</p>
       <a href="https://github.com/mingbl/timetable/blob/master/README.md">Guide / Support</a>
     </div>
-
-    <script src="scripts.js" charset="utf-8"></script>
 
     <script>
       function hideMe() {
@@ -209,6 +207,13 @@
         localStorage.setItem("hideII13F", "true");
       };
       if (localStorage["hideII13F"]) {hideMe()};
+      {
+        let versionUpdate = (new Date()).getTime();
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "scripts.js?v=" + versionUpdate;
+        document.body.appendChild(script)
+      };
     </script>
   </body>
 </html>
