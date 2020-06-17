@@ -3,7 +3,6 @@ resizer = document.getElementById("cell-resizer"),
 headings = document.getElementsByClassName("day-heading"),
 periodTimes = {0: "8:00-9:10", 1: "9:10-10:20", 2: "10:20-10:45", 3: "10:45-12:05", 4: "12:05-12:50", 5: "12:50-2:00"},
 maxSubjects = 8,
-//toolBox = document.getElementById("tools"),
 settings = document.getElementById("settings-box"),
 dateDisplay = document.getElementById("date"),
 standard = {
@@ -29,8 +28,6 @@ standard = {
     default_text: "#FFFFFF",
     highlighted_text: "#000000",
     table_border: "#4750B8",
-    /*hover_colour: "#D3D3D3",
-    active_colour: "#808080",*/
     heading_bg: "#808080",
     notes_text: "#FFFFFF",
   },
@@ -39,33 +36,10 @@ standard = {
 // Retrieve or initialise data
 if (localStorage["data"]) { // Local Storage
   var data = JSON.parse(localStorage.getItem("data"));
-  if (!data.subjects[7]) {
-    data.subjects[7] = new Object();
-    data.subjects[7].code = "";
-    data.subjects[7].name = "";
-    data.subjects[7].link = "";
-    data.subjects[7].teacher = "";
-    data.subjects[7].highlight = standard.highlights[6];
-  };
-  if (!data.subjects[8]) {
-    data.subjects[8] = new Object();
-    data.subjects[8].code = "";
-    data.subjects[8].name = "";
-    data.subjects[8].link = "";
-    data.subjects[8].teacher = "";
-    data.subjects[8].highlight = standard.highlights[7];
-  };
-  if (data.periods.length != 30) {
-    data.periods.splice(10, 0, null, null, null, null, null);
-    data.periods.splice(20, 0, null, null, null, null, null);
-  };
-  if (!data.options.hasOwnProperty("colours")) {
-    data.options.colours = {};
-  };
-  if (data.options.hasOwnProperty("customColour1")) {data.options.colours["body_bg"] = data.options["customColour1"]; delete data.options["customColour1"]};
-  if (data.options.hasOwnProperty("customColour2")) {data.options.colours["default_text"] = data.options["customColour2"]; delete data.options["customColour2"]};
-  if (data.options.hasOwnProperty("customColour3")) {data.options.colours["highlighted_text"] = data.options["customColour3"]; delete data.options["customColour3"]};
+  /*
+  Place code to convert/update old data to new data here (and remove comment tags)
   localStorage.setItem("data", JSON.stringify(data));
+  */
 } else { // Create new
   var data = {
     subjects: {},
@@ -347,7 +321,6 @@ function getPeriod(pos) {
 function backupURL() {
   if (!data.subjects.hasOwnProperty("1")) {alert("Your timetable is empty. Have you clicked 'Save' yet?"); return};
   window.location = "#" + JSON.stringify(data);
-  //alert("Your data has been backed up to the URL. Bookmark this new page and click 'Import' if your timetable disappears.");
 };
 
 function importURL() {
@@ -357,7 +330,6 @@ function importURL() {
   imported = imported.substr(web + 1, imported.length);
   data = JSON.parse(imported.toString());
   localStorage.setItem("data", JSON.stringify(data));
-  //alert("Your data has been imported.");
   window.location.reload();
 };
 
@@ -513,18 +485,6 @@ function setColours() {
       elements[i].style.color = customColour("notes_text");
     };
   };
-
-
-  /*let hover_colour = customColour("hover_colour");
-  let hoverElements = document.querySelectorAll("td.valid,td.valid#current");
-  for (var i = 0; i < hoverElements.length; i++) {
-    hoverElements[i].onmouseover = function() {
-      this.style.backgroundColor = hover_colour;
-    };
-    hoverElements[i].onmouseoff = function(this.style.backgroundColor) {
-
-    }
-  };*/
 };
 
 function displayDate() {
@@ -599,3 +559,20 @@ function resetColours() {
   localStorage.setItem("data", JSON.stringify(data));
   window.location.reload();
 };
+
+function toUltra() {
+  if (!localStorage["data"]) {alert("You don't have any links saved!"); return}
+  let confirmation = confirm("Convert to Blackboard Collaborate Ultra links?")
+  if (!confirmation) {return}
+  console.log(data)
+  for (subject in data.subjects) {
+    let link = data.subjects[subject].link
+    let indexOf = link.indexOf("course_id")
+    let courseId = link.substring(indexOf, indexOf + 19)
+    console.log(courseId)
+    let newLink = "https://elearn.eq.edu.au/webapps/collab-ultra/tool/collabultra?" + courseId + "&mode=view"
+    data.subjects[subject].link = newLink
+  }
+  localStorage.setItem("data", JSON.stringify(data))
+  window.location.reload()
+}

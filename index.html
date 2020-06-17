@@ -9,7 +9,7 @@
     <h1> Timetable </h1>
     <p id="date">Loading date... (If you're reading this, JavaScript is disabled or there's an error in the code.)</p>
     <div id="announcement">
-      <p>!!! NEW !!! New interface</p>
+      <p>!!! NEW !!! Scroll down for a button to convert your lesson links to <u>Blackboard Collaborate Ultra</u> links.</p>
       <a href="https://github.com/mingbl/timetable/blob/master/README.md">Guide / Support</a>
       <button onclick="hideMe()">Hide me</button>
     </div>
@@ -192,21 +192,22 @@
       </table>
 
       <button style="margin-top:2vh;" class="save-button" type="button" onclick="saveDetails()"> Save </button>
+      <button style="margin-top:2vh;" type="button" onclick="toUltra()"> Convert links to Ultra </button>
 
       <p>Remember to save!</p>
     </div>
 
     <div id="footer">
-      <p style="font-weight: bold;">Version II13H | Created by ML</p>
+      <p style="font-weight: bold;">Version II25A | Created by ML</p>
       <a href="https://github.com/mingbl/timetable/blob/master/README.md">Guide / Support</a>
     </div>
 
     <script>
       function hideMe() {
         document.getElementById("announcement").style.display = "none";
-        localStorage.setItem("hideII13F", "true");
+        localStorage.setItem("hideII25A", "true");
       };
-      if (localStorage["hideII13F"]) {hideMe()};
+      if (localStorage["hideII25A"]) {hideMe()};
       {
         let versionUpdate = (new Date()).getTime();
         let script = document.createElement("script");
